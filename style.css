@@ -20,7 +20,8 @@ body {
 #submit-button:hover{
   background: -moz-linear-gradient(to right, #41007f, #00a7e1);
   background: -o-linear-gradient(to right, #41007f, #00a7e1);
-  background: -webkit-gradient(to right, #41007f, #00a7e1);
+  background: -webkit-gradient(right, #41007f, #00a7e1);
+  background: linear-gradient(to right, #41007f, #00a7e1);
   color: white;
 }
 
