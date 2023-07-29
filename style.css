@@ -1,0 +1,42 @@
+body {
+  --back-bg: #f2f2f2;
+  background-color: var(--back-bg);
+}
+
+#loginForm {
+  height: 60vh;
+  width: 30vw;
+  min-width: 300px;
+  min-height: 500px;
+  max-width: 400px;
+}
+
+#submit-button{
+  transition: 0.3s;
+  -moz-transition: 0.3s;
+  font-family: 'Poppins';
+  font-size: 0.8rem;
+}
+#submit-button:hover{
+  background: -moz-linear-gradient(to right, #41007f, #00a7e1);
+  background: -o-linear-gradient(to right, #41007f, #00a7e1);
+  background: -webkit-gradient(to right, #41007f, #00a7e1);
+  color: white;
+}
+
+#top-welcome {
+  font-family: 'Poppins';
+  font-weight: 300;
+  font-size: 2rem;
+}
+
+.content-label {
+  font-family: 'Poppins';
+}
+
+#email-input, #password-input {
+  background: none;
+  text-align: left;
+  font-family: 'Poppins';
+  font-size: 0.8rem;
+}
