@@ -26,7 +26,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 
-  <!-- bootstrap componenets -->
+  <!-- bootstrap components -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
@@ -47,21 +47,21 @@
           <img src="assets/PL_Color.png" height="50px">
         </div>
         <div class="container d-flex flex-column ms-2 me-2 mb-4">
-          <p class="text-dark-emphasis fs-6 mb-1 text-start content-label">Email</p>
+          <label for="user-email" class="text-dark-emphasis fs-6 mb-1 text-start content-label" aria-label="email">Email</label>
           <input class="form-control border-0 input-group-text text-dark" type="email" id="email-input" autofocus="true" required></input>
           <hr class="mt-0">
         </div>
         <div class="container d-flex flex-column ms-2 me-2">
-          <p class="text-dark-emphasis fs-6 mb-1 text-start content-label">Password</p>
+          <label for="password" class="text-dark-emphasis fs-6 mb-1 text-start content-label" aria-label="password">Password</label>
           <input class="border-0 form-control input-group-text text-dark text-start" type="password" id="password-input" required></input>
           <hr class="mt-0" id="rule">
         </div>
         <div class="d-flex justify-content-center mt-4">
-          <button class="btn border rounded-pill px-3 pt-2 pb-2" type="submit" id="submit-button" onclick="formValidate">Submit</button>
+          <button class="btn border rounded-pill px-3 pt-2 pb-2" type="submit" id="submit-button" onclick="formValidate()">Submit</button>
         </div>
       </div>
     </div>
-    </form>
+  </form>
 </body>
 
 </html>

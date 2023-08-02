@@ -1,7 +1,7 @@
-body {
-  --back-bg: #e0e0e0;
+/* #back-container {
+  --back-bg: #f2f2f2;
   background-color: var(--back-bg);
-}
+} */
 
 #loginForm {
   height: 60vh;

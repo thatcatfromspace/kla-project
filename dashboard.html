@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <!-- START META INFO -->
+  <meta charset="UTF-8">
+  <meta name="professionally leap" keywords="kla, professionally leap">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- END META INFO  -->
+
+  <!-- START GITHUB PAGES OPTIMIZATION -->
+  <meta http-equiv='cache-control' content='no-cache'> 
+  <meta http-equiv='expires' content='0'> 
+  <meta http-equiv='pragma' content='no-cache'>
+  <!-- END GITHUB PAGES OPTIMIZATION  -->
+
+  <!-- page icon  -->
+  <link rel="icon" href="assets/PL_Color_min.png">
+
+  <!-- style sheets & fonts -->
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+
+  <!-- bootstrap components -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <title> ProLeap | Stduent Dashboard </title>
+</head>
+
+<body>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+  crossorigin="anonymous"></script>
+  <script src="dashboard.js"></script>
+  <main class="d-flex flex-row">
+    <nav class="col-3 border-end border-dark-subtle">
+      <div id="profile-badge" class="container-fluid d-flex flex-column justify-content-center align-items-center py-3">
+        <img id="prof-leap-logo" class="mb-3" src="assets/PL_Color.svg" width="70%">
+        <img id="profile-picture" src="assets/cat-1.webp" width="40%">
+        <span id="profile-name" class="mt-2"> Charlie Brown </span>
+        <button class="btn-sm text border rounded-pill px-2 mt-2" id="edit-profile"> Edit</button>
+      </div>
+      <div class="container-fluid d-flex flex-column justify-content-center align-items-center ms-1">
+        <div id="dashboard" onclick="highlight()">
+          <button class="btn d-flex align-items-center"><img class="me-2" src="assets/apps.svg" width="10%"> Dashboard </button>
+        </div>
+        <div id="activity" onclick="highlight()">
+          <button class="btn d-flex align-items-center"><img class="me-2" src="assets/clock-three.svg" width="10%"> Activities </button>
+        </div>
+        <div id="settings" onclick="highlight()">
+          <button class="btn d-flex align-items-center"><img class="me-2" src="assets/settings-sliders.svg" width="10%"> Settings </button>
+        </div>
+      </div>
+    </nav>
+    <div class="container row" id="main-container">
+    </div>
+  </main>
+</body>
+
+</html>
