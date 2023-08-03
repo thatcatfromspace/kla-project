@@ -23,3 +23,14 @@ nav {
 #dashboard, #activity, #settings {
   width: 80%;
 }
+
+.sidebar-item {
+  background-color: transparent;
+  border: none;
+  margin-bottom: 1rem;
+  transition: opacity 0.15s;
+}
+
+.sidebar-item:hover {
+  opacity: 0.7;
+}
