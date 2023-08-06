@@ -1,38 +1,45 @@
-.App {
-  text-align: center;
+#back-container {
+  --back-bg: rgb(243, 239, 239);
+  background-color: var(--back-bg);
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+#loginForm {
+  height: 60vh;
+  width: 30vw;
+  min-width: 300px;
+  min-height: 500px;
+  max-width: 375px;
+  background-color: #f2f2f2;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+#submit-button{
+  transition: 0.3s;
+  -moz-transition: 0.3s;
+  font-family: 'Poppins';
+  font-size: 0.8rem;
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+#submit-button:hover{
+  background: -moz-linear-gradient(to right, #41007f, #00a7e1);
+  background: -o-linear-gradient(to right, #41007f, #00a7e1);
+  background: -webkit-gradient(right, #41007f, #00a7e1);
+  background: linear-gradient(to right, #41007f, #00a7e1);
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+#top-welcome {
+  font-family: 'Poppins';
+  font-weight: 300;
+  font-size: 2rem;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.content-label {
+  font-family: 'Poppins';
 }
+
+#email-input, #password-input {
+  background: none;
+  text-align: left;
+  font-family: 'Poppins';
+  font-size: 0.8rem;
+}
+

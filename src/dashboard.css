@@ -1,0 +1,36 @@
+nav {
+  font-family: 'Lato';
+  max-width: 250px;
+  min-width: 200px;
+  height: 100vh;
+}
+
+#profile-picture {
+  border-radius: 50px;
+}
+
+#edit-profile {
+  font-size: 0.8rem;
+  color: gray;
+  background-color: transparent;
+  font-weight: bold;
+}
+
+.navbar-item {
+  font-size: 0.9em;
+}
+
+#dashboard, #activity, #settings {
+  width: 80%;
+}
+
+.sidebar-item {
+  background-color: transparent;
+  border: none;
+  margin-bottom: 1rem;
+  transition: opacity 0.15s;
+}
+
+.sidebar-item:hover {
+  opacity: 0.7;
+}
