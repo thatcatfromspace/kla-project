@@ -43,7 +43,7 @@
   font-size: 0.8rem;
 }
 
-#sign-up {
-  font-family: 'Poppins';
+.signup-text {
+  font-family: 'Poppins' !important;
 }
 

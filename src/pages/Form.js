@@ -1,19 +1,28 @@
 import { useForm } from "react-hook-form";
 import logo from '../assets/PL_Color.png'
+import * as yup from 'yup';
+import { yupResolver } from "@hookform/resolvers/yup";
 import '../App.css';
-// import * as yup from 'yup';
 
-export const Form = () => {
-  const { register, handleSubmit } = useForm();
     
   const onSubmit = (data) => {
     console.log(data);
   };
 
-  // const schema = yup.object().shape({
-  //   'email': yup.string().email().required(),
-  //   'password': yup.string().required()
-  // });
+  const schema = yup.object().shape({
+    email: yup
+    .string()
+    .email()
+    .required(),
+    password: yup
+    .string()
+    .required(),
+  });
+
+  export const Form = () => {
+    const { register, handleSubmit } = useForm({ // passing schema for validation
+      resolver: yupResolver(schema)
+    });
 
     return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -35,10 +44,10 @@ export const Form = () => {
         <div className="d-flex justify-content-center mt-4">
           <button className="btn border rounded-pill px-3 pt-2 pb-2" type="submit" id="submit-button">Submit</button>
         </div>
-        <div className="d-flex justify-content-center sign-up pt-2">
-          <p> New user? <a href="https://google.com"> Sign up.</a></p>
+        <div className="d-flex justify-content-center pt-4">
+          <p id="signup-text"> New user? <a href="https://google.com"> Sign up.</a></p>
         </div>
       </div>
     </form>
-    )
+  );
 }
