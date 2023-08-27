@@ -1,11 +1,17 @@
 import './App.css';
-// import { useState } from 'react';
-import { Form } from './pages/Form';
+import { LoginForm } from './pages/LoginForm';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { SignUp } from './pages/SignUpForm';
 
 function App() {
   return (
   <div id="back-container" className="container min-vw-100 min-vh-100 d-flex justify-content-center align-items-center">
-    <Form />
+    <Router>
+      <Routes>
+        <Route path='/signup' element={<SignUp />} />
+      </Routes>
+      <LoginForm />
+    </Router>
   </div>
   );
 }
