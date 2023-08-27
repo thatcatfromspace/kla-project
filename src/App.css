@@ -36,10 +36,14 @@
   font-family: 'Poppins';
 }
 
-#email-input, #password-input {
+#email-input, #password-input{
   background: none;
   text-align: left;
   font-family: 'Poppins';
   font-size: 0.8rem;
+}
+
+#sign-up {
+  font-family: 'Poppins';
 }
 
