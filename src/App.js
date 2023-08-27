@@ -24,10 +24,6 @@ function App() {
   }
 
   return (
-    <Router>
-    <Routes>
-      <Route path='/dashboard' element={<Dashboard />} />
-    </Routes>
     <div id="back-container" className="container min-vw-100 min-vh-100 d-flex justify-content-center align-items-center">
     <form>
       <div id="loginForm" className="container flex-column shadow border rounded justify-content-center p-4">
@@ -51,7 +47,6 @@ function App() {
       </div>
     </form>  
   </div>
-  </Router>
   );
 }
 
