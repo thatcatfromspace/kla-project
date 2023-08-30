@@ -19,7 +19,7 @@ export const LoginForm = () => {
 
   return (
     <div onSubmit={handleSubmit(onSubmit)} className="login-back bg-slate-700 w-full h-screen justify-end min-h-64 flex">
-      <form className="login-form rounded-lg shadow-lg min-h-[50vh] h-[50vh] py-3 px-3 w-64 my-52 bg-slate-200 me-20">
+      <form className="login-form rounded-lg min-h-[50vh] h-[50vh] py-3 px-3 w-64 my-52 me-20">
         <label className="flex justify-center pt-2 font-bold text-xl mb-6" htmlFor="continue-with"> Continue with </label>
         <div className="login-icons flex justify-evenly mx-14 mb-3">
           <Link to="https://github.com" target="_blank">
@@ -33,10 +33,12 @@ export const LoginForm = () => {
             </svg>
           </Link>
         </div>
-        <hr className="[background-color]" />
+        <hr className=" border border-gray-300" />
         <div className="flex flex-col px-2 pt-2 pb-4">
-          <label className="pb-3 text-lg" htmlFor="email"> Email </label>
-          <input type="email" className=" text-sm  bg-transparent px-2 shadow h-7 rounded focus:bg-slate-200 me-2" autoFocus={true} required {...register("email")} ></input>
+          <fieldset>
+            <legend> Email </legend>
+        </fieldset>
+        <input type="email" className=" text-sm bg-transparent px-2 h-7 border border-b-2 border-b-slate-300 rounded focus:outline-emerald-400 focus:border-0 me-2" autoFocus={true} required {...register("email")} ></input>
         </div>
         <div className="flex flex-col px-2 pt-2 pb-4">
           <label className="pb-3 text-lg" htmlFor="password"> Password </label>
@@ -54,7 +56,7 @@ export const LoginForm = () => {
             Sign in with Google
           </button>
         </div> */}
-        <div className="flex justify-center pt-4">
+        <div className="flex justify-center">
         <p className="text-sm">New user? <Link className="text-blue-500 hover:underline visited:text-blue-500" to='/signup'> Sign up.</Link></p>
       </div>
       </form>
