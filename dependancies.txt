@@ -1,5 +1,0 @@
-@tanstack/react-query
-react-router-dom
-yup
-react-hook-form
-@resolvers/yup-resolvers 
