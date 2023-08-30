@@ -3,6 +3,8 @@ import * as yup from 'yup';
 import { Link } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 
+import { Rule } from "./Rule"
+
 const onSubmit = (data) => {
   console.log(data);
 };
@@ -33,17 +35,7 @@ export const LoginForm = () => {
             </svg>
           </Link>
         </div>
-        <div className="rules flex mx-2 justify-center">
-          <div className="align-middle mt-2"> 
-            <hr className=" border border-gray-300 w-24" />
-          </div>
-          <div className="mx-2">
-            <span> OR </span>
-          </div>
-          <div className="align-middle pt-2">
-            <hr className=" border border-gray-300 w-24" />
-          </div>
-        </div>
+        <Rule />
         <div className="flex flex-col px-2 pt-5 pb-4">
           <fieldset>
             <legend><p className="text-lg mb-1"> Email </p></legend>
