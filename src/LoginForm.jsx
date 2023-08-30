@@ -43,7 +43,7 @@ export const LoginForm = () => {
           </button>
         </div>
         <div className="flex justify-center pt-4">
-        <p className="text-sm">New user? <Link className="text-blue-500 hover:underline" to='/signup'> Sign up.</Link></p>
+        <p className="text-sm">New user? <Link className="text-blue-500 hover:underline visited:text-blue-500" to='/signup'> Sign up.</Link></p>
       </div>
       </form>
     </div>

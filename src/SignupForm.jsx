@@ -34,7 +34,7 @@ export const SignupForm = () => {
           <button type="submit" class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl transition-colors transition-delay-300 hover:transition-delay-0 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2">Sign in</button>
         </div>
         <div className="flex justify-center pt-4">
-        <p className="text-sm"> Already have an account? <Link className="text-blue-500 hover:underline" to='/'> Log in.</Link></p>
+        <p className="text-sm"> Already have an account? <Link className="text-blue-500 hover:underline visited:text-blue-500" to='/'> Log in.</Link></p>
       </div>
       </form>
     </div>
