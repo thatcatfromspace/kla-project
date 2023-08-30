@@ -1,8 +1,9 @@
-# React + Vite
+# ProLeap
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Professional Leap (stylized as ProLeap) is a student management system.
 
-Currently, two official plugins are available:
+## Running locally
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+After cloning the repository locally, run `npm install` to install the required dependancies. Optionally, if you are on Visual Studio Code, install the extensions `Inline fold` and `Intellisense for TailwindCSS`. 
+
+Run `npm run dev` to start a local server. Configure the server host and port (if required) by editting `vite.config.js`.
