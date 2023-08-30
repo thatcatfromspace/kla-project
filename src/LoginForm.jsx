@@ -19,9 +19,9 @@ export const LoginForm = () => {
 
   return (
     <div onSubmit={handleSubmit(onSubmit)} className="login-back bg-slate-700 w-full h-screen justify-end min-h-64 flex">
-      <form className="login-form rounded-lg min-h-[50vh] h-[50vh] py-3 px-3 w-64 my-52 me-20">
-        <label className="flex justify-center pt-2 font-bold text-xl mb-6" htmlFor="continue-with"> Continue with </label>
-        <div className="login-icons flex justify-evenly mx-14 mb-3">
+      <form className="login-form min-h-[50vh] h-[50vh] py-3 px-3 w-64 my-52 me-20">
+        <label className="flex justify-center pt-2 font-bold text-2xl mb-6" htmlFor="continue-with"> Continue with </label>
+        <div className="login-icons flex justify-evenly mx-14 mb-5">
           <Link to="https://github.com" target="_blank">
             <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 19">
               <path fill-rule="evenodd" d="M8.842 18.083a8.8 8.8 0 0 1-8.65-8.948 8.841 8.841 0 0 1 8.8-8.652h.153a8.464 8.464 0 0 1 5.7 2.257l-2.193 2.038A5.27 5.27 0 0 0 9.09 3.4a5.882 5.882 0 0 0-.2 11.76h.124a5.091 5.091 0 0 0 5.248-4.057L14.3 11H9V8h8.34c.066.543.095 1.09.088 1.636-.086 5.053-3.463 8.449-8.4 8.449l-.186-.002Z" clip-rule="evenodd"/>
@@ -33,31 +33,34 @@ export const LoginForm = () => {
             </svg>
           </Link>
         </div>
-        <hr className=" border border-gray-300" />
+        <div className="rules flex mx-2 justify-center">
+          <div className="align-middle mt-2"> 
+            <hr className=" border border-gray-300 w-24" />
+          </div>
+          <div className="mx-2">
+            <span> OR </span>
+          </div>
+          <div className="align-middle pt-2">
+            <hr className=" border border-gray-300 w-24" />
+          </div>
+        </div>
+        <div className="flex flex-col px-2 pt-5 pb-4">
+          <fieldset>
+            <legend><p className="text-lg mb-1"> Email </p></legend>
+          </fieldset>
+        <input type="email" className="text-sm px-2 h-10 bg-gray2 rounded-md outline-none focus:outline-primary focus:border-0 me-2" autoFocus={true} required {...register("email")} ></input>
+        </div>
         <div className="flex flex-col px-2 pt-2 pb-4">
           <fieldset>
-            <legend> Email </legend>
-        </fieldset>
-        <input type="email" className=" text-sm bg-transparent px-2 h-7 border border-b-2 border-b-slate-300 rounded focus:outline-emerald-400 focus:border-0 me-2" autoFocus={true} required {...register("email")} ></input>
-        </div>
-        <div className="flex flex-col px-2 pt-2 pb-4">
-          <label className="pb-3 text-lg" htmlFor="password"> Password </label>
-          <input type="password" className=" text-sm bg-transparent shadow px-2 h-7 rounded focus:bg-slate-200 me-2" required {...register("password")}></input>
+            <legend><p className="text-lg mb-1"> Password </p></legend>
+          </fieldset>
+          <input type="password" className="text-sm px-2 h-10 bg-gray2 rounded-md outline-none focus:outline-primary focus:border-0 me-2" required {...register("password")}></input>
         </div>
         <div className="flex justify-center py-5">
-          <button type="submit" class="text-white bg-gradient-to-br from-blue-500 to-pink-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-full text-md px-5 py-2.5 text-center mr-2 mb-2">Login</button>
+          <button type="submit" class="text-white bg-gradient-to-br from-gray0 to-gray1 hover:bg-gradient-to-bl focus:ring-4 outline-none focus:outline-none font-medium rounded-full text-md px-5 py-2.5 text-center mr-2 mb-2">Login</button>
         </div>
-        {/* <div className="flex justify-center flex-col px-4">
-          <button type="button" class="text-white bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 focus:outline-none focus:ring-[#24292F]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500 dark:hover:bg-[#050708]/30 mr-2 mb-2">
-            
-            Sign in with GitHub
-          </button>
-          <button type="button" class="text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 mr-2 mb-2">
-            Sign in with Google
-          </button>
-        </div> */}
         <div className="flex justify-center">
-        <p className="text-sm">New user? <Link className="text-blue-500 hover:underline visited:text-blue-500" to='/signup'> Sign up.</Link></p>
+        <p className="text-md">New user? <Link className="text-blue-500 hover:underline visited:text-blue-500" to='/signup'> Sign up.</Link></p>
       </div>
       </form>
     </div>
