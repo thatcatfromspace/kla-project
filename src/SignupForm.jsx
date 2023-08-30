@@ -19,7 +19,7 @@ export const SignupForm = () => {
     <div onSubmit={handleSubmit(onSubmit)} className="signup-back w-full h-screen justify-start min-h-64 flex">
       <form className="signup-form py-3 px-3 w-64 my-52 ms-20 min-h-[450px]">
         <div className="flex flex-col px-2 pt-2 pb-4">
-          <h2 className="text-3xl mb-5 font-bold text-center"> Welcome! </h2>
+          <p className="text-2xl mb-5 font-bold text-center"> Welcome! </p>
           <fieldset>
             <legend><p className="text-lg mb-1"> Email </p></legend>
           </fieldset>
