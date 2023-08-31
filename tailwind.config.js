@@ -2,6 +2,7 @@
 export default {
   mode: "jit",
   content: ["index.html", "./src/**/*.{html,jsx}"],
+  darkMode: 'class',
   theme: {
     extend: {
       fontFamily: {

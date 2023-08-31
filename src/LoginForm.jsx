@@ -38,7 +38,7 @@ export const LoginForm = () => {
   };
 
   return (
-    <div onSubmit={handleSubmit(onSubmit)} className="login-back bg-slate-700 w-full h-screen justify-end min-h-64 flex">
+    <div onSubmit={handleSubmit(onSubmit)} className="login-back w-full h-screen justify-end min-h-64 flex">
       <form className="login-form min-h-[50vh] h-[50vh] py-3 px-3 w-72 my-52 me-20">
         <label className="flex justify-center pt-2 font-bold text-2xl mb-6" htmlFor="continue-with"> Continue with </label>
         <div className="login-icons flex justify-evenly mx-14 mb-5">
