@@ -58,7 +58,7 @@ export const LoginForm = () => {
           <fieldset>
             <legend><p className="text-lg mb-1"> Email </p></legend>
           </fieldset>
-        <input type="email" className="text-md w-64 px-2 h-10 bg-gray2 rounded-md outline-none focus:outline-primary focus:border-0 me-2" autoFocus required {...register("email")} ></input>
+        <input type="email" className="text-md w-full px-2 h-10 bg-gray2 rounded-md outline-none focus:outline-primary focus:border-0 me-2" autoFocus required {...register("email")} ></input>
         </div>
         <div className="flex flex-col px-2 pt-2 pb-4">
           <fieldset>
