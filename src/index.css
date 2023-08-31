@@ -3,6 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 @layer utilities {
 	.login-back {
 		background-image: linear-gradient(285deg, theme(colors.gray3) 50%, theme(colors.primary) 50%);
