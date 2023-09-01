@@ -6,11 +6,12 @@ export default {
   theme: {
     screens: {
       'md': '650px',
-      'lg': '960px',
+      'lg': '1095px',
     },
     extend: {
       fontFamily: {
         sans: "'Source Sans 3'",
+        poppins: "'Poppins'"
       },
       colors:{
         primary: "#0C2638",
