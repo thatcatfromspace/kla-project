@@ -4,6 +4,10 @@ export default {
   content: ["index.html", "./src/**/*.{html,jsx}"],
   darkMode: 'class',
   theme: {
+    screens: {
+      'md': '650px',
+      'lg': '960px',
+    },
     extend: {
       fontFamily: {
         sans: "'Source Sans 3'",

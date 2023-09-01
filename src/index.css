@@ -5,9 +5,10 @@
 
 
 @layer utilities {
-	.login {
+	/* .login {
 		background-image: linear-gradient(285deg, theme(colors.gray3) 50%, theme(colors.primary) 50%);
-	}
+	}  */
+
   .signup-back {
     background-image: linear-gradient(75deg, theme(colors.gray3) 50%, theme(colors.primary) 50%);
   }
