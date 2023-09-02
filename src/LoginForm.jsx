@@ -86,7 +86,7 @@ export const LoginForm = () => {
             </svg>
           </button>
         </div>
-        <label className="flex justify-center mt-5"><p className="pe-[2px]">Need an account?</p> <Link className="text-blue-500 hover:underline visited:text-blue-500"> Sign up.</Link></label>
+        <label className="flex justify-center mt-5"><p className="pe-[4px]">Need an account?</p> <Link to="/signup" className="text-blue-500 hover:underline visited:text-blue-500"> Sign up.</Link></label>
       </form>
     </div>
     </div>
