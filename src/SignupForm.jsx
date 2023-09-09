@@ -94,13 +94,13 @@ export const SignupForm = () => {
   };
 
   return (
-    <div className="sign-up flex h-screen items-center justify-end lg:[background-image:linear-gradient(75deg,theme(colors.gray3)_50%,theme(colors.primary1)_50%)]">
+    <div className="sign-up flex h-screen items-center justify-end bg-gray3 lg:[background-image:linear-gradient(75deg,theme(colors.gray3)_50%,theme(colors.primary1)_50%)]">
       <div className="sign-up-form  w-[100%]">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col px-3 py-3 mx-[10vw] w-[40%] lg:w-[350px] gap-8 text-center "
+          className="flex flex-col mx-auto px-3 py-3 w-[40%] lg:w-[350px] gap-8 text-center "
         >
-          <span className="text-4xl my-5">Sign Up</span>
+          <span className="text-4xl my-5 font-poppins">Sign Up</span>
           <input
             type="text"
             className="bg-gray2 h-12 rounded-2xl text-md px-4"
