@@ -2,7 +2,7 @@
 const withMT = require("@material-tailwind/react/utils/withMT");
 export default {
   mode: "jit",
-  content: ["index.html", "./src/**/*.{html,jsx}"],
+  content: ["index.html", "./src/**/*.{html,jsx}", "./**/@material-tailwind/**/*.{html,js,ts,jsx,tsx,mdx}"],
   darkMode: 'class',
   theme: {
     screens: {

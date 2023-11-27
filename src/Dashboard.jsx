@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { ViewCarousel } from "@material-ui/icons";
-import { Carousel } from "@material-tailwind/react";
+
 import axios from "axios";
 export const Dashboard = () => {
   const [activeElement, setActiveElement] = useState(0);
@@ -99,8 +98,8 @@ export const Dashboard = () => {
             </div> */}
       <div className="cards flex w-[40vw] mt-[3vh] ml-[3vw] h-[40vh]" >
         <button onClick={previousCard} className="w-[10%]">PREV</button>
-            <img src={cards[currentIndex]} alt="" className="w-[90%] h-full"/>
-            <button onClick={nextCard} className="w-[10%]">NEXT</button>
+          <img src={cards[currentIndex]} alt="" className="w-[90%] h-full"/>
+        <button onClick={nextCard} className="w-[10%]">NEXT</button>
       </div>
     </main>
   );
