@@ -1,20 +1,25 @@
 import { useEffect, useState } from "react";
-import { Cards } from "./Cards";
+// import { Cards } from "./Cards";
 import axios from "axios";
+
 export const Dashboard = () => {
+
   const [activeElement, setActiveElement] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [questions, setQuestions] = useState([]);
+
   const cards = ["./vite.svg", "./test.png", "./vite.svg", "./test.png"];
   const changeActiveElement = (e, itemId) => {
     e.preventDefault();
     setActiveElement(itemId);
   };
+
   const previousCard = () => {
     const isFirstSlide = currentIndex === 0;
     const newIndex = isFirstSlide ? currentIndex : currentIndex - 1;
     setCurrentIndex(newIndex);
   };
+
   const nextCard = () => {
     const isFirstSlide = currentIndex === questions.length - 1;
     const newIndex = isFirstSlide ? currentIndex : currentIndex + 1;
@@ -31,8 +36,40 @@ export const Dashboard = () => {
     console.log(questions);
   }, [questions]);
 
-  return (
-    <main className="[height:100%] [min-height:100vh] [background-image:linear-gradient(300deg,theme(colors.tertiary)_40%,theme(colors.gray3)_40%)] py-7 px-10">
+  const handleRenderRadioButtonCLick = (e, value, index) => {
+    // do stuff idk
+  }
+
+  const RenderRadioButton = (props) => { 
+   /*
+    * desc: string
+    * question: string
+    * options: string[]
+    * multiple: boolean
+    */ 
+    return (
+      <div className="w-full flex-col mb-2">
+        <label htmlFor={props.desc}> {props.question} </label>
+        {props.options.map((value, index) => (
+          <div>
+            <input type="radio" name={props.desc} value={value} onClick={(e) => handleRenderRadioButtonCLick(e, value, index)}></input>
+            <label htmlFor={`radio-${index}`}> {props.options[index]} </label>
+          </div>
+        ))}
+      </div>
+    )
+  };
+
+  const RenderTextArea = (props) => (
+    <div className="w-full flex-col">
+      <label htmlFor={props.desc}> {props.question} </label>
+      <input type="input" className="h-12 rounded-md overflow-scroll"></input>
+    </div>
+  );
+  
+
+  return ( 
+    <main className="[height:100%] [min-height:100vh] bg-gray3 py-7 px-10"> { /* [background-image:linear-gradient(300deg,theme(colors.tertiary)_40%,theme(colors.gray3)_40%)] */} 
       <nav className="flex justify-between items-center">
         <div>
           <svg
@@ -49,7 +86,7 @@ export const Dashboard = () => {
           <div
             className={
               activeElement == 0
-                ? "border-b-2 border-b-primary2 cursor-pointer h-7 transition"
+                ? "border-b-2 border-b-primary2 cursor-pointer h-7 transition-colors duration-300 ease-in-out"
                 : "cursor-pointer h-7"
             }
             onClick={(e) => setActiveElement(0)}
@@ -60,7 +97,7 @@ export const Dashboard = () => {
           <div
             className={
               activeElement == 1
-                ? "border-b-2 border-b-primary2 cursor-pointer h-7 transition"
+                ? "border-b-2 border-b-primary2 cursor-pointer h-7 transition-colors duration-300 ease-in-out"
                 : "cursor-pointer h-7"
             }
             onClick={(e) => setActiveElement(1)}
@@ -71,7 +108,7 @@ export const Dashboard = () => {
           <div
             className={
               activeElement == 2
-                ? "border-b-2 border-b-primary2 cursor-pointer h-7 transition"
+                ? "border-b-2 border-b-primary2 cursor-pointer h-7 transition duration-300 ease-in-out"
                 : "cursor-pointer h-7"
             }
             onClick={(e) => setActiveElement(2)}
@@ -81,13 +118,13 @@ export const Dashboard = () => {
           </div>
         </div>
       </nav>
-      <div className="cards flex w-[40vw] mt-[3vh] ml-[3vw] h-[40vh]">
+      {/* <div className="cards flex w-[40vw] mt-[3vh] ml-[3vw] h-[40vh]">
         <button onClick={previousCard} className="w-[10%]">
           PREV
         </button>
         <div>
           {/* {questions.length ? questions[currentIndex].q_desc : null} */}
-          {questions.length && questions[currentIndex].q_type === "TEXT" ? (
+          {/* {questions.length && questions[currentIndex].q_type === "TEXT" ? (
             <div>
               <label htmlFor="">{questions[currentIndex].q_text}</label>
               <input type="text" />
@@ -100,7 +137,7 @@ export const Dashboard = () => {
               <input type="text" />
             </div>)
            : null}
-        </div>
+        </div> */}
         {/* <img src={cards[currentIndex]} alt="" className="w-[90%] h-full"/> */}
         {/* {questions && 
               questions.map((val,index)=>(
@@ -109,9 +146,16 @@ export const Dashboard = () => {
                 </div>
               ))
             } */}
-        <button onClick={nextCard} className="w-[10%]">
+        {/* <button onClick={nextCard} className="w-[10%]">
           NEXT
         </button>
+      </div> */} 
+
+      <div className="card flex w-[35vw] min-w-[400px] h-[65vh] min-h-[650px] ms-24 mt-10 p-4 md:place-self-center border border-solid border-black">
+        <form>
+          <RenderRadioButton desc="getting age" question="What's your age?" options={[18, 19, 20, 21]}/>
+          <RenderTextArea desc="kundi" question="unga toothpaste la uppu irukka?"/>
+        </form>
       </div>
     </main>
   );
