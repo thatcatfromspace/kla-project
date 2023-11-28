@@ -1,43 +1,37 @@
 import { useEffect, useState } from "react";
-
+import { Cards } from "./Cards";
 import axios from "axios";
 export const Dashboard = () => {
   const [activeElement, setActiveElement] = useState(0);
-  const [currentIndex,setCurrentIndex ] = useState(1);
-  const [question,setQuestions] = useState([]);
-  const cards = [
-    "./vite.svg",
-    "./test.png",
-    "./vite.svg",
-    "./test.png",
-  ]
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [questions, setQuestions] = useState([]);
+  const cards = ["./vite.svg", "./test.png", "./vite.svg", "./test.png"];
   const changeActiveElement = (e, itemId) => {
     e.preventDefault();
     setActiveElement(itemId);
   };
-  const previousCard= () =>{
-    const isFirstSlide = currentIndex ===0;
-    const newIndex = isFirstSlide?currentIndex:currentIndex-1;
-    setCurrentIndex(newIndex)
+  const previousCard = () => {
+    const isFirstSlide = currentIndex === 0;
+    const newIndex = isFirstSlide ? currentIndex : currentIndex - 1;
+    setCurrentIndex(newIndex);
   };
-  const nextCard= () =>{
-    const isFirstSlide = currentIndex === cards.length-1;
-    const newIndex = isFirstSlide?currentIndex:currentIndex+1;
+  const nextCard = () => {
+    const isFirstSlide = currentIndex === questions.length - 1;
+    const newIndex = isFirstSlide ? currentIndex : currentIndex + 1;
     setCurrentIndex(newIndex);
   };
 
-  useEffect(()=>{
-    axios.get("http://192.168.1.14:8000/api/question/").then(
-      (res)=>{
-        const response = res.data;
-      // console.log(res.data);
-      setQuestions((...prev) => [response]);
-      console.log(question);
-      // setQuestions(res.data);
-      
-    })
-  },[])
-   return (
+  useEffect(() => {
+    axios.get("http://192.168.1.14:8000/api/question/").then((res) => {
+      const response = res.data;
+      setQuestions(response);
+    });
+  }, []);
+  useEffect(() => {
+    console.log(questions);
+  }, [questions]);
+
+  return (
     <main className="[height:100%] [min-height:100vh] [background-image:linear-gradient(300deg,theme(colors.tertiary)_40%,theme(colors.gray3)_40%)] py-7 px-10">
       <nav className="flex justify-between items-center">
         <div>
@@ -87,36 +81,39 @@ export const Dashboard = () => {
           </div>
         </div>
       </nav>
-            {/* <div>
-              {
-                question.map((val,index)=>(
-                  <li>
-                    {val.q_desc}
-                  </li>
-                ))
-              }
-            </div> */}
-      <div className="cards flex w-[40vw] mt-[3vh] ml-[3vw] h-[40vh]" >
-        <button onClick={previousCard} className="w-[10%]">PREV</button>
-          <img src={cards[currentIndex]} alt="" className="w-[90%] h-full"/>
-        <button onClick={nextCard} className="w-[10%]">NEXT</button>
+      <div className="cards flex w-[40vw] mt-[3vh] ml-[3vw] h-[40vh]">
+        <button onClick={previousCard} className="w-[10%]">
+          PREV
+        </button>
+        <div>
+          {/* {questions.length ? questions[currentIndex].q_desc : null} */}
+          {questions.length && questions[currentIndex].q_type === "TEXT" ? (
+            <div>
+              <label htmlFor="">{questions[currentIndex].q_text}</label>
+              <input type="text" />
+            </div>
+          ): 
+          questions.length &&
+            questions[currentIndex].q_type === "RADIO" ? (
+            <div>
+              <label htmlFor="">{questions[currentIndex].q_text}</label>
+              <input type="text" />
+            </div>)
+           : null}
+        </div>
+        {/* <img src={cards[currentIndex]} alt="" className="w-[90%] h-full"/> */}
+        {/* {questions && 
+              questions.map((val,index)=>(
+                <div>
+                  {val.q_type}
+                </div>
+              ))
+            } */}
+        <button onClick={nextCard} className="w-[10%]">
+          NEXT
+        </button>
       </div>
     </main>
   );
 };
 
-// id
-// : 
-// 1
-// is_required
-// : 
-// true
-// q_desc
-// : 
-// "Dummy number"
-// q_text
-// : 
-// "Whats ur age ?"
-// q_type
-// : 
-// "NUMBER"
