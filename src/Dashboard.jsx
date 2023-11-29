@@ -19,7 +19,6 @@ export const Dashboard = () => {
     const isFirstSlide = currentIndex === 0;
     const newIndex = isFirstSlide ? currentIndex : currentIndex - 1;
     setCurrentIndex(newIndex);
-
   };
   useEffect(() => {
     if (activity.length != 0) {
@@ -67,10 +66,10 @@ export const Dashboard = () => {
 
   useEffect(() => {
     if (activity.length != 0) {
-      let temp=0;
+      let temp = 0;
       for (let i = activity.cards.length; i >= 0; i--) {
         setRadioOptions([]);
-        console.log("L"+radioOptions);
+        console.log("L" + radioOptions);
         setCard([]);
         if (i < activity.cards.length) {
           axios
@@ -80,22 +79,43 @@ export const Dashboard = () => {
             .then((res) => {
               if (res.data.status === "NOT_ATTEMPTED") {
                 const response = res.data;
-                console.log(res.data.status);
-                temp=i;}});}
-            }
-            if(temp<activity.cards.length)
-            {
-              console.log(temp);
-              setCurrentIndex(temp);
-            }
+                console.log(res.data);
+                temp = i;
+              }
+            });
+        }
+      }
+      if (temp < activity.cards.length) {
+        console.log(temp);
+        setCurrentIndex(temp);
+      }
     }
   }, [activity]);
 
-
   const handleRenderRadioButtonCLick = (e, value, index) => {
     // do stuff idk
+    // e.preventDefault();
+    // setTheme({ dark: true, light: false });
     console.log(value);
   };
+  const [theme, setTheme] = useState({ dark: false, light: false });
+
+  const onChangeTheme = (e, name) => {
+    // e.preventDefault();
+    // const { name } = e.target
+    // console.log('clicked', name)
+    // if (name === 'light') {
+    //   setTheme({ dark: true, light: false })
+    // }
+    // if (name === 'dark') {
+    //   setTheme({ dark: true, light: false })
+    // }
+    setTheme({ dark: true, light: false });
+  };
+  const handleOptionChange = (event) => {
+    setSelectedOption(event.target.value);
+  };
+  const [selectedOption, setSelectedOption] = useState("option1");
 
   const RenderRadioButton = (props) => {
     /*
@@ -104,12 +124,21 @@ export const Dashboard = () => {
      * options: string[]
      * multiple: boolean
      */
+
     return (
-      <div className="w-full flex-col mb-2">
+      <div className="w-full flex flex-col flex-grow flex-shrink-0 basis-full mb-2 p-2 border border-primary2 rounded-lg hover:border-[2px] [transiton:border-bottom-radius_0.3s_ease-in-out] ">
         <label htmlFor={props.desc}> {props.question} </label>
         {props.options.map((value, index) => (
-          <div>
+          <div className="">
+            {/* <CustomRadio
+          key={index}
+          value={value}
+          checked={selectedOption === value}
+          onChange={handleOptionChange}
+          id={value}
+        /> */}
             <input
+              className="before:content[''] peer relative w-3 h-3 mr-2 cursor-pointer appearance-none rounded-full border border-blue-200 border-5 hover:bg-primary/70 focus:bg-tertiary checked:bg-tertiary active:bg-black transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4  before:transition-opacity  hover:before:opacity-5"
               type="radio"
               name={props.desc}
               value={value}
@@ -122,13 +151,67 @@ export const Dashboard = () => {
     );
   };
 
+  const RenderEmailArea = (props) => {
+    /*
+     * desc: string
+     * question: string
+     * required: boolean
+     */
+    return (
+      <div className="w-full flex flex-col flex-grow flex-shrink-0 basis-full mb-2 p-2 border border-primary2 rounded-lg hover:border-[2px] [transiton:border-bottom-radius_0.3s_ease-in-out]">
+        <label className="mb-2" htmlFor={props.desc}>
+          {" "}
+          {props.question}{" "}
+          <span className="text-red-600">{props.required ? " *" : " "}</span>
+        </label>
+        <input
+          type="email"
+          className={`box-border break-words outline-none ${
+            props.long ? "" : "w-1/2"
+          } py-2 text-sm bg-transparent rounded-sm border-b-2 border-b-primary/70 focus:border-b-[2.5px] focus:border-b-blue-500 transition ease-in overflow-scroll`}
+          onBlur={() => monitorEmptyText(event, props.required)}
+        ></input>
+      </div>
+    );
+  };
+
   const RenderTextArea = (props) => (
-    <div className="w-full flex-col">
-      <label htmlFor={props.desc}> {props.question} </label>
-      <input type="input" className="h-12 rounded-md overflow-scroll"></input>
+    /*
+     * desc: string
+     * question: string
+     * required: boolean
+     * long: boolean
+     */
+    <div className="w-full flex flex-col flex-grow flex-shrink-0 basis-full mb-2 p-2 border border-primary2 rounded-lg hover:border-[2px] [transiton:border-bottom-radius_0.3s_ease-in-out] ">
+      <label className="mb-2" htmlFor={props.desc}>
+        {" "}
+        {props.question}{" "}
+        <span className="text-red-600">{props.required ? " *" : " "}</span>
+      </label>
+      <input
+        type="input"
+        className={`box-border break-words outline-none ${
+          props.long ? "" : "w-1/2"
+        } py-2 text-sm bg-transparent rounded-sm border-b-2 border-b-primary/70 focus:border-b-[2.5px] focus:border-b-blue-500 ease-in overflow-scroll`}
+        onBlur={() => monitorEmptyText(event, props.required)}
+      ></input>
     </div>
   );
 
+  const RenderDateArea = (props) => (
+    <div className="w-full flex flex-col flex-grow flex-shrink-0 basis-full  p-2 border border-primary2 rounded-lg hover:border-[2px] [transiton:border-bottom-radius_0.3s_ease-in-out] ">
+      <label className="mb-2" htmlFor={props.desc}>
+        {" "}
+        {props.question}{" "}
+        <span className="text-red-600">{props.required ? " *" : " "}</span>
+      </label>
+      <input
+        type="date"
+        className={`w-1/2 bg-transparent border-b-2 px-0 focus:border-b-[2.5px] focus:border-b-blue-500 ease-in overflow-scroll`}
+        onBlur={() => monitorEmptyText(event, props.required)}
+      ></input>
+    </div>
+  );
   return (
     <main className="[height:100%] [min-height:100vh] bg-gray3 py-7 px-10">
       <nav className="flex justify-between items-center">
@@ -179,39 +262,50 @@ export const Dashboard = () => {
           </div>
         </div>
       </nav>
-      <div className="cards flex w-[40vw] mt-[3vh] ml-[3vw] h-[40vh]">
+      <div className="cards flex w-[40vw] mt-[3vh] ml-[3vw] ">
         <button onClick={(e) => previousCard(e)} className="w-[10%]">
           PREV
         </button>
-        {card.questions &&
-          card.questions.map((val, index) => (
-            <li className="flex flex-col">
-              {val.question.q_type === "TEXT" ||
-              val.question.q_type === "EMAIL" ||
-              val.question.q_type === "DATE" ? (
-                <RenderTextArea
-                  desc={val.question.q_desc}
-                  question={val.question.q_text}
-                />
-              ) : val.question.q_type === "RADIO" ||
-                val.question.q_type === "MULTIPLE_CHOICE" ? (
-                <RenderRadioButton
-                  desc={val.question.q_desc}
-                  question={val.question.q_text}
-                  options={radioOptions[index]}
-                />
-              ) : null}{" "}
-            </li>
-          ))}
+        <ul className="flex flex-col">
+          {card.questions &&
+            card.questions.map((val, index) => (
+              <li className="none h-full w-[50vw]">
+                {val.question.q_type === "TEXT" ||
+                val.question.q_type === "SHORT_ANSWER" ? (
+                  <RenderTextArea
+                    desc={val.question.q_desc}
+                    question={val.question.q_text}
+                  />
+                ) : val.question.q_type === "RADIO" ||
+                  val.question.q_type === "MULTIPLE_CHOICE" ? (
+                  <RenderRadioButton
+                    desc={val.question.q_desc}
+                    question={val.question.q_text}
+                    options={radioOptions[index]}
+                  />
+                ) : val.question.q_type === "EMAIL" ? (
+                  <RenderEmailArea
+                    desc={val.question.q_desc}
+                    question={val.question.q_text}
+                    options={radioOptions[index]}
+                  />
+                ) : val.question.q_type === "DATE" ? (
+                  <RenderDateArea
+                    desc={val.question.q_desc}
+                    question={val.question.q_text}
+                    options={radioOptions[index]}
+                  />
+                ) : null}{" "}
+              </li>
+            ))}
+        </ul>
         <button onClick={(e) => nextCard(e)} className="w-[10%]">
           NEXT
         </button>
       </div>
-
     </main>
   );
 };
-
 
 // WORKING PROTOTYPE
 // useEffect(() => {
