@@ -49,7 +49,6 @@ export const DirectPolling = () => {
     ans[changes] = ans[changes] + 1;
     setTableData(ans);
   };
-
   useEffect(() => {
     const interval = setInterval(() => {
       const newData = {
@@ -110,3 +109,4 @@ export const DirectPolling = () => {
     </div>
   );
 };
+

@@ -1,63 +1,125 @@
 import { useEffect, useState } from "react";
 // import { Cards } from "./Cards";
 import axios from "axios";
+import { Card } from "@material-tailwind/react";
 
 export const Dashboard = () => {
-
   const [activeElement, setActiveElement] = useState(0);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [questions, setQuestions] = useState([]);
-
-  const cards = ["./vite.svg", "./test.png", "./vite.svg", "./test.png"];
+  const [currentIndex, setCurrentIndex] = useState();
+  const [card, setCard] = useState([]);
+  const [activity, setActivity] = useState([]);
+  const [radioOptions, setRadioOptions] = useState([]);
+  const [tempFlag, setTempFlag] = useState(false);
   const changeActiveElement = (e, itemId) => {
     e.preventDefault();
     setActiveElement(itemId);
   };
-
-  const previousCard = () => {
+  const previousCard = (e) => {
+    e.preventDefault();
     const isFirstSlide = currentIndex === 0;
     const newIndex = isFirstSlide ? currentIndex : currentIndex - 1;
     setCurrentIndex(newIndex);
-  };
 
-  const nextCard = () => {
-    const isFirstSlide = currentIndex === questions.length - 1;
+  };
+  useEffect(() => {
+    if (activity.length != 0) {
+      if (currentIndex < activity.cards.length) {
+        getCardDetails(activity.id, activity.cards[currentIndex]);
+      }
+    }
+  }, [currentIndex]);
+
+  const nextCard = (e) => {
+    e.preventDefault();
+    let len = activity.cards.length;
+    const isFirstSlide = currentIndex === len - 1;
     const newIndex = isFirstSlide ? currentIndex : currentIndex + 1;
     setCurrentIndex(newIndex);
   };
 
   useEffect(() => {
-    axios.get("http://192.168.1.14:8000/api/question/").then((res) => {
-      const response = res.data;
-      setQuestions(response);
+    axios.get("http://127.0.0.1:8000/api/activity/1/").then((res) => {
+      let response = res.data[0];
+      console.log(res.data);
+      setActivity(response);
     });
   }, []);
+
+  const getCardDetails = (aid, cid) => {
+    setCard([]);
+    setRadioOptions([]);
+    axios
+      .get(`http://127.0.0.1:8000/api/activity/${aid}/card/${cid}/`)
+      .then((res) => {
+        const response = res.data;
+        setCard(response);
+        const respons = res.data.questions;
+        for (let i = 0; i < respons.length; i++) {
+          let options = respons[i].question.options;
+          const tempArray = [];
+          for (let j = 0; j < options.length; j++) {
+            tempArray.push(options[j].value);
+          }
+          setRadioOptions((prevChunks) => [...prevChunks, tempArray]);
+        }
+      });
+  };
+
   useEffect(() => {
-    console.log(questions);
-  }, [questions]);
+    if (activity.length != 0) {
+      let temp=0;
+      for (let i = activity.cards.length; i >= 0; i--) {
+        setRadioOptions([]);
+        console.log("L"+radioOptions);
+        setCard([]);
+        if (i < activity.cards.length) {
+          axios
+            .get(
+              `http://127.0.0.1:8000/api/activity/${activity.id}/${activity.cards[i]}/`
+            )
+            .then((res) => {
+              if (res.data.status === "NOT_ATTEMPTED") {
+                const response = res.data;
+                console.log(res.data.status);
+                temp=i;}});}
+            }
+            if(temp<activity.cards.length)
+            {
+              console.log(temp);
+              setCurrentIndex(temp);
+            }
+    }
+  }, [activity]);
+
 
   const handleRenderRadioButtonCLick = (e, value, index) => {
     // do stuff idk
-  }
+    console.log(value);
+  };
 
-  const RenderRadioButton = (props) => { 
-   /*
-    * desc: string
-    * question: string
-    * options: string[]
-    * multiple: boolean
-    */ 
+  const RenderRadioButton = (props) => {
+    /*
+     * desc: string
+     * question: string
+     * options: string[]
+     * multiple: boolean
+     */
     return (
       <div className="w-full flex-col mb-2">
         <label htmlFor={props.desc}> {props.question} </label>
         {props.options.map((value, index) => (
           <div>
-            <input type="radio" name={props.desc} value={value} onClick={(e) => handleRenderRadioButtonCLick(e, value, index)}></input>
+            <input
+              type="radio"
+              name={props.desc}
+              value={value}
+              onClick={(e) => handleRenderRadioButtonCLick(e, value, index)}
+            ></input>
             <label htmlFor={`radio-${index}`}> {props.options[index]} </label>
           </div>
         ))}
       </div>
-    )
+    );
   };
 
   const RenderTextArea = (props) => (
@@ -66,10 +128,9 @@ export const Dashboard = () => {
       <input type="input" className="h-12 rounded-md overflow-scroll"></input>
     </div>
   );
-  
 
-  return ( 
-    <main className="[height:100%] [min-height:100vh] bg-gray3 py-7 px-10"> { /* [background-image:linear-gradient(300deg,theme(colors.tertiary)_40%,theme(colors.gray3)_40%)] */} 
+  return (
+    <main className="[height:100%] [min-height:100vh] bg-gray3 py-7 px-10">
       <nav className="flex justify-between items-center">
         <div>
           <svg
@@ -118,46 +179,63 @@ export const Dashboard = () => {
           </div>
         </div>
       </nav>
-      {/* <div className="cards flex w-[40vw] mt-[3vh] ml-[3vw] h-[40vh]">
-        <button onClick={previousCard} className="w-[10%]">
+      <div className="cards flex w-[40vw] mt-[3vh] ml-[3vw] h-[40vh]">
+        <button onClick={(e) => previousCard(e)} className="w-[10%]">
           PREV
         </button>
-        <div>
-          {/* {questions.length ? questions[currentIndex].q_desc : null} */}
-          {/* {questions.length && questions[currentIndex].q_type === "TEXT" ? (
-            <div>
-              <label htmlFor="">{questions[currentIndex].q_text}</label>
-              <input type="text" />
-            </div>
-          ): 
-          questions.length &&
-            questions[currentIndex].q_type === "RADIO" ? (
-            <div>
-              <label htmlFor="">{questions[currentIndex].q_text}</label>
-              <input type="text" />
-            </div>)
-           : null}
-        </div> */}
-        {/* <img src={cards[currentIndex]} alt="" className="w-[90%] h-full"/> */}
-        {/* {questions && 
-              questions.map((val,index)=>(
-                <div>
-                  {val.q_type}
-                </div>
-              ))
-            } */}
-        {/* <button onClick={nextCard} className="w-[10%]">
+        {card.questions &&
+          card.questions.map((val, index) => (
+            <li className="flex flex-col">
+              {val.question.q_type === "TEXT" ||
+              val.question.q_type === "EMAIL" ||
+              val.question.q_type === "DATE" ? (
+                <RenderTextArea
+                  desc={val.question.q_desc}
+                  question={val.question.q_text}
+                />
+              ) : val.question.q_type === "RADIO" ||
+                val.question.q_type === "MULTIPLE_CHOICE" ? (
+                <RenderRadioButton
+                  desc={val.question.q_desc}
+                  question={val.question.q_text}
+                  options={radioOptions[index]}
+                />
+              ) : null}{" "}
+            </li>
+          ))}
+        <button onClick={(e) => nextCard(e)} className="w-[10%]">
           NEXT
         </button>
-      </div> */} 
-
-      <div className="card flex w-[35vw] min-w-[400px] h-[65vh] min-h-[650px] ms-24 mt-10 p-4 md:place-self-center border border-solid border-black">
-        <form>
-          <RenderRadioButton desc="getting age" question="What's your age?" options={[18, 19, 20, 21]}/>
-          <RenderTextArea desc="kundi" question="unga toothpaste la uppu irukka?"/>
-        </form>
       </div>
+
     </main>
   );
 };
 
+
+// WORKING PROTOTYPE
+// useEffect(() => {
+//   if (activity.length != 0) {
+//     console.log(activity[0].cards);
+//     for (let i = 0; i < activity[0].cards.length; i++) {
+//       axios.get(`http://127.0.0.1:8000/api/card/1/`).then((res) => {
+//         if (res.data.status === "NOT_ATTEMPTED") {
+//           const response = res.data;
+//           setCurrentIndex(res.data.id);
+//           setCard(response.questions);
+//           const respons = res.data.questions;
+//           for (let i = 0; i < respons.length; i++) {
+//             // console.log("QUES"+i);
+//             let options = respons[i].question.options;
+//             const tempArray = [];
+//             for (let j = 0; j < options.length; j++) {
+//               tempArray.push(options[j].value);
+//             }
+//             // console.log(tempArray);
+//             setRadioOptions((prevChunks) => [...prevChunks, tempArray]);
+//           }
+//         }
+//       });
+//     }
+//   }
+// }, [activity]);
