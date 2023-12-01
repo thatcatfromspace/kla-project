@@ -9,8 +9,20 @@ export const Dashboard = () => {
   const [card, setCard] = useState([]);
   const [activity, setActivity] = useState([]);
   const [radioOptions, setRadioOptions] = useState([]);
+  const [radioIds, setRadioIds] = useState([]);
   const [tempFlag, setTempFlag] = useState(false);
-
+  const [errorMessage, setErrorMessage] = useState(
+    [
+      {question_id: error},
+    ]
+  );
+  const [textAnswer, setTestAnswer] = useState({
+    question: null,
+    answer: null,
+    user: null,
+    option: null,
+  });
+  const [userId, setUserId] = useState(7);
   const changeActiveElement = (e, itemId) => {
     e.preventDefault();
     setActiveElement(itemId);
@@ -54,14 +66,18 @@ export const Dashboard = () => {
         const response = res.data;
         setCard(response);
         const respons = res.data.questions;
-        for (let i = 0; i < respons.length; i++) {
-          let options = respons[i].question.options;
-          const tempArray = [];
-          for (let j = 0; j < options.length; j++) {
-            tempArray.push(options[j].value);
-          }
-          setRadioOptions((prevChunks) => [...prevChunks, tempArray]);
-        }
+        // for (let i = 0; i < respons.length; i++) {
+        //   let options = respons[i].question.options;
+        //   const tempArray = [];
+        //   const tempArray1 = [];
+        //   // ADD ANOTHER STATE VARIABLE TP MAINTAIN ID OF THE OPTIONS
+        //   for (let j = 0; j < options.length; j++) {
+        //     tempArray.push(options[j].value);
+        //     tempArray1.push(options[j].id);
+        //   }
+        //   setRadioOptions((prevChunks) => [...prevChunks, tempArray]);
+        //   setRadioIds((prevChunks) => [...prevChunks, tempArray1]);
+        // }
       });
   };
 
@@ -93,25 +109,40 @@ export const Dashboard = () => {
     }
   }, [activity]);
 
-  const handleRenderRadioButtonCLick = (e, value, index) => {
+  useEffect(() => {
+    const interval = setTimeout(() => {
+      console.log(textAnswer);
+      if (textAnswer.answer != null && textAnswer.answer.length!=0) {
+        axios
+          .post("http://127.0.0.1:8000/api/answer/", textAnswer)
+          .then((res) => {
+            console.log(res.data);
+          });
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [textAnswer]);
+
+  const handleRenderRadioButtonCLick = ( question, options) => {
     // do stuff idk
     // e.preventDefault();
     // setTheme({ dark: true, light: false });
-    console.log(value);
-  };
-  const [theme, setTheme] = useState({ dark: false, light: false });
-
-  const onChangeTheme = (e, name) => {
-    // e.preventDefault();
-    // const { name } = e.target
-    // console.log('clicked', name)
-    // if (name === 'light') {
-    //   setTheme({ dark: true, light: false })
-    // }
-    // if (name === 'dark') {
-    //   setTheme({ dark: true, light: false })
-    // }
-    setTheme({ dark: true, light: false });
+    console.log({
+      question: question.question.id,
+      answer:'',
+      user: userId,
+      option: options.id
+    });
+    axios
+      .post("http://127.0.0.1:8000/api/answer/", {
+        question: question.question.id,
+        answer:'',
+        user: userId,
+        option: options.id
+      })
+      .then((res) => {
+        console.log(res.data);
+      });
   };
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
@@ -186,15 +217,25 @@ export const Dashboard = () => {
     <div className="w-full flex flex-col flex-grow flex-shrink-0 basis-full mb-2 p-2 border border-primary2 rounded-lg hover:border-[2px] [transiton:border-bottom-radius_0.3s_ease-in-out] ">
       <label className="mb-2" htmlFor={props.desc}>
         {" "}
-        {props.question}{" "}
+        {props.question.question.q_text}{" "}
         <span className="text-red-600">{props.required ? " *" : " "}</span>
       </label>
       <input
-        type="input"
+        type="text"
         className={`box-border break-words outline-none ${
           props.long ? "" : "w-1/2"
         } py-2 text-sm bg-transparent rounded-sm border-b-2 border-b-primary/70 focus:border-b-[2.5px] focus:border-b-blue-500 ease-in overflow-scroll`}
         onBlur={() => monitorEmptyText(event, props.required)}
+        value={props.textAnswer.answer}
+        onChange={(e) => {
+          props.setTestAnswer({
+            question: props.question.question.id,
+            answer: e.target.value,
+            user: userId,
+            option: "",
+          });
+        }}
+        // required
       ></input>
     </div>
   );
@@ -265,7 +306,22 @@ export const Dashboard = () => {
       </nav>
       <div className="cards flex w-[40vw] mt-[3vh] ml-[3vw] ">
         <button onClick={(e) => previousCard(e)} className="w-[10%]">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="gray" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg> {/* make stroke color gray if going to previous is disabled! */}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="gray"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="feather feather-arrow-left"
+          >
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>{" "}
+          {/* make stroke color gray if going to previous is disabled! */}
         </button>
         <ul className="flex flex-col">
           {card.questions &&
@@ -273,35 +329,142 @@ export const Dashboard = () => {
               <li className="none h-full w-[50vw]">
                 {val.question.q_type === "TEXT" ||
                 val.question.q_type === "SHORT_ANSWER" ? (
-                  <RenderTextArea
-                    desc={val.question.q_desc}
-                    question={val.question.q_text}
-                  />
+                  // <RenderTextArea desc={val.question.q_desc} question={val} textAnswer={textAnswer} setTestAnswer={setTestAnswer}/>
+                  <div className="w-full flex flex-col flex-grow flex-shrink-0 basis-full mb-2 p-2 border border-primary2 rounded-lg hover:border-[2px] [transiton:border-bottom-radius_0.3s_ease-in-out] ">
+                    <label className="mb-2" htmlFor={val.question.desc}>
+                      {" "}
+                      {val.question.q_text}{" "}
+                      <span className="text-red-600">
+                        {val.question.required ? " *" : " "}
+                      </span>
+                    </label>
+                    <input
+                      type="text"
+                      className={`box-border break-words outline-none ${val.question.q_type==="SHORT_ANSWER"?"":"w-1/2"} py-2 text-sm bg-transparent rounded-sm border-b-2 border-b-primary/70 focus:border-b-[2.5px] focus:border-b-blue-500 ease-in overflow-scroll`}
+                      // onBlur={() => monitorEmptyText(required)}
+                      // value={textAnswer.answer != null ? textAnswer.answer : ""}
+                      onChange={(e) => {
+                        setTestAnswer({
+                          question: val.question.id,
+                          answer: e.target.value,
+                          user: userId,
+                          option: "",
+                        });
+                      }}
+                      // required
+                    ></input>
+                    
+                  </div>
                 ) : val.question.q_type === "RADIO" ||
                   val.question.q_type === "MULTIPLE_CHOICE" ? (
-                  <RenderRadioButton
-                    desc={val.question.q_desc}
-                    question={val.question.q_text}
-                    options={radioOptions[index]}
-                  />
+                  // <RenderRadioButton
+                  //   desc={val.question.q_desc}
+                  //   question={val.question.q_text}
+                  //   options={radioOptions[index]}
+                  // />
+                  <div className="w-full flex flex-col flex-grow flex-shrink-0 basis-full mb-2 p-2 border border-primary2 rounded-lg hover:border-[2px] [transiton:border-bottom-radius_0.3s_ease-in-out] ">
+                    <label htmlFor={val.question.desc}>
+                      {" "}
+                      {val.question.q_text}{" "}
+                    </label>
+                    {val.question.options.map((value, index) => (
+                      <div className="">
+                        <input
+                          className="before:content[''] peer relative w-3 h-3 mr-2 cursor-pointer appearance-none rounded-full border border-blue-200 border-5 hover:bg-primary/70 focus:bg-tertiary checked:bg-tertiary active:bg-black transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4  before:transition-opacity  hover:before:opacity-5"
+                          type="radio"
+                          name={val.question.desc}
+                          value={value}
+                          onClick={(e) =>
+                            handleRenderRadioButtonCLick(val, value)
+                          }
+                        ></input>
+                        <label htmlFor={`radio-${index}`}>
+                          {" "}
+                          {value.value}{" "}
+                        </label>
+                      </div>
+                    ))}
+                  </div>
                 ) : val.question.q_type === "EMAIL" ? (
-                  <RenderEmailArea
-                    desc={val.question.q_desc}
-                    question={val.question.q_text}
-                    options={radioOptions[index]}
-                  />
+                  // <RenderEmailArea
+                  //   desc={val.question.q_desc}
+                  //   question={val.question.q_text}
+                  //   options={radioOptions[index]}
+                  // />
+                  <div className="w-full flex flex-col flex-grow flex-shrink-0 basis-full mb-2 p-2 border border-primary2 rounded-lg hover:border-[2px] [transiton:border-bottom-radius_0.3s_ease-in-out] ">
+                    <label className="mb-2" htmlFor={val.question.desc}>
+                      {" "}
+                      {val.question.q_text}{" "}
+                      <span className="text-red-600">
+                        {val.question.required ? " *" : " "}
+                      </span>
+                    </label>
+                    <input
+                      type="email"
+                      className={`box-border break-words outline-none ${"w-1/2"} py-2 text-sm bg-transparent rounded-sm border-b-2 border-b-primary/70 focus:border-b-[2.5px] focus:border-b-blue-500 ease-in overflow-scroll`}
+                      // onBlur={() => monitorEmptyText(required)}
+                      // value={(e)=>{e.target.value}}
+                      onChange={(e) => {
+                        setTestAnswer({
+                          question: val.question.id,
+                          answer: e.target.value,
+                          user: userId,
+                          option: "",
+                        });
+                      }}
+                      // required
+                    ></input>
+                  </div>
                 ) : val.question.q_type === "DATE" ? (
-                  <RenderDateArea
-                    desc={val.question.q_desc}
-                    question={val.question.q_text}
-                    options={radioOptions[index]}
-                  />
+                  // <RenderDateArea
+                  //   desc={val.question.q_desc}
+                  //   question={val.question.q_text}
+                  //   options={radioOptions[index]}
+                  // />
+                  <div className="w-full flex flex-col flex-grow flex-shrink-0 bg-transparent basis-full mb-2 p-2 border border-primary2 rounded-lg hover:border-[2px] [transiton:border-bottom-radius_0.3s_ease-in-out] ">
+                    <label className="mb-2" htmlFor={val.question.desc}>
+                      {" "}
+                      {val.question.q_text}{" "}
+                      <span className="text-red-600">
+                        {val.question.required ? " *" : " "}
+                      </span>
+                    </label>
+                    <input
+                      type="date"
+                      className={`box-border break-words outline-none w-1/2 py-2 text-sm bg-transparent rounded-sm overflow-scroll`}
+                      // onBlur={() => monitorEmptyText(required)}
+                      // value={(e)=>{e.target.value}}
+                      onChange={(e) => {
+                        setTestAnswer({
+                          question: val.question.id,
+                          answer: e.target.value,
+                          user: userId,
+                          option: "",
+                        });
+                      }}
+                      // required
+                    ></input>
+                  </div>
                 ) : null}{" "}
               </li>
             ))}
         </ul>
         <button onClick={(e) => nextCard(e)} className="w-[10%]">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="black"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="feather feather-arrow-right"
+          >
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
         </button>
       </div>
     </main>
