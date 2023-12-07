@@ -13,7 +13,7 @@ export const Cards = ({uid,cid,Activity}) => {
       is_true: false,
     },
   ]);
-  const userId = uid.uid;
+  const userId = uid;
   const [questionsId, setQuestionId] = useState([]);
   const [requiredFlag, setRequiredFlag] = useState([]);
 
@@ -42,6 +42,8 @@ export const Cards = ({uid,cid,Activity}) => {
               answer: "",
               user: userId,
               option: card.questions[i].question.answer.id,
+              activity:activity.id,
+              card:card.id,
             };
             axios.post("http://127.0.0.1:8000/api/answer/", obj).then((res) => {
               console.log(res.data);
@@ -52,6 +54,8 @@ export const Cards = ({uid,cid,Activity}) => {
               answer: card.questions[i].question.answer,
               user: userId,
               option: "",
+              activity:activity.id,
+              card:card.id,
             };
             axios.post("http://127.0.0.1:8000/api/answer/", obj).then((res) => {
               console.log(res.data);
@@ -117,32 +121,51 @@ export const Cards = ({uid,cid,Activity}) => {
       setErrorMessage(temp);
     } else {
       for (let i = 0; i < questionsId.length; i++) {
-        // console.log(card.questions[i]);
+        console.log(card.questions[i]);
         if ("answer" in card.questions[i].question) {
-          if (card.questions[i].question.q_type === "RADIO") {
+          
+          if (card.questions[i].question.type === "RADIO") {
             let obj = {
               question: card.questions[i].question.id,
               answer: "",
               user: userId,
               option: card.questions[i].question.answer.id,
+              activity:activity.id,
+              card:card.id,
             };
             axios.post("http://127.0.0.1:8000/api/answer/", obj).then((res) => {
               console.log(res.data);
             });
-          } else {
+          } else if(card.questions[i].question.type === "TEXT" || card.questions[i].question.type === "SHORT_ANSWER") {
             let obj = {
               question: card.questions[i].question.id,
               answer: card.questions[i].question.answer,
               user: userId,
               option: "",
+              activity:activity.id,
+              card:card.id,
             };
+            axios.post("http://127.0.0.1:8000/api/answer/", obj).then((res) => {
+              console.log(res.data);
+            });
+          }
+          else{
+            let obj = {
+              question: card.questions[i].question.id,
+              answer: null,
+              user: userId,
+              option: null,
+              activity:activity.id,
+              card:card.id,
+            };
+            console.log(obj);
             axios.post("http://127.0.0.1:8000/api/answer/", obj).then((res) => {
               console.log(res.data);
             });
           }
         }
       }
-      console.log("HELLO" + required);
+      // console.log("HELLO" + required);
     }
     const newIndex = isLastSlide
       ? currentIndex
