@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-export const Cards = (uid) => {
-  const [currentIndex, setCurrentIndex] = useState();
+export const Cards = ({uid,cid,Activity}) => {
+  console.log(cid);
+  const [currentIndex, setCurrentIndex] = useState(cid);
   const [card, setCard] = useState([]);
-  const [activity, setActivity] = useState([]);
+  const [activity, setActivity] = useState(Activity);
   const [tempFlag, setTempFlag] = useState(false);
   const [errorMessage, setErrorMessage] = useState([
     {
@@ -99,7 +100,7 @@ export const Cards = (uid) => {
 
   const nextCard = (e) => {
     e.preventDefault();
-    let len = activity.cards.length;
+    let len = activity.card_ids.length;
     const isLastSlide = currentIndex === len - 1;
     const required = requiredFlag.length === 0;
     if (!required) {
@@ -151,29 +152,17 @@ export const Cards = (uid) => {
     setCurrentIndex(newIndex);
   };
 
-  useEffect(() => {
-    axios
-      .get(`http://127.0.0.1:8000/api/recentactivity/${userId}/`)
-      .then((res) => {
-        let response = res.data;
-        console.log(res.data);
-        setActivity(response);
-        if (res.data.cards.length != 0) {
-          setCurrentIndex(0);
-        }
-      });
-  }, []);
 
   useEffect(() => {
-    if (activity.length != 0) {
-      if (currentIndex < activity.cards.length) {
-        getCardDetails(activity.id, activity.cards[currentIndex]);
+    if (activity != null) {
+      if (currentIndex < activity.card_ids.length) {
+        getCardDetails(activity.id, activity.card_ids[currentIndex]);
       }
     }
   }, [currentIndex]);
   return (
-    <div className="cards flex w-[40vw] mt-[3vh] ml-[3vw] ">
-      <button onClick={(e) => previousCard(e)} className="w-[10%]">
+    <div className="cards w-[75%] flex justify-evenly align-middle bg-primary mt-[3vh] border-2 text-gray1 border-black py-3">
+      <button onClick={(e) => previousCard(e)} className="h-fit relative top-[45%]  hover:border-2 rounded-[50%] p-1 hover:bg-gray1">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -184,39 +173,42 @@ export const Cards = (uid) => {
             currentIndex === 0
               ? "gray"
               : requiredFlag.length === 0
-              ? "black"
+              ? "#349959"
               : "gray"
           }
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className="feather feather-arrow-left"
+          className="feather feather-arrow-left hover:stroke-tertiary"
         >
           <line x1="19" y1="12" x2="5" y2="12"></line>
           <polyline points="12 19 5 12 12 5"></polyline>
         </svg>{" "}
         {/* make stroke color gray if going to previous is disabled! */}
       </button>
-      <ul className="flex flex-col">
+      <ul className="flex flex-col  ">
+        <div className="w- h-[10%] bg-primary text-tertiary p-3">
+          {activity!=null ?activity.name:null}
+        </div>
         {card.questions &&
           card.questions.map((val, index) => (
-            <li className="none h-full w-[50vw]" key={index}>
-              {val.question.q_type === "TEXT" ||
-              val.question.q_type === "SHORT_ANSWER" ? (
+            <li className="none h-full w-[100%] border-t-2 border-primary" key={index}>
+              {val.question.type === "TEXT" ||
+              val.question.type === "SHORT_ANSWER" ? (
                 // <RenderTextArea desc={val.question.q_desc} question={val} textAnswer={textAnswer} setTestAnswer={setTestAnswer}/>
-                <div className="w-full flex flex-col flex-grow flex-shrink-0 basis-full mb-2 p-2 border border-primary2 rounded-lg hover:border-[2px] [transiton:border-bottom-radius_0.3s_ease-in-out] ">
+                <div className="w-full flex flex-col flex-grow flex-shrink-0 basis-full mb-2 p-2  rounded-lg  [transiton:border-bottom-radius_0.3s_ease-in-out] ">
                   <label className="mb-2" htmlFor={val.question.desc}>
                     {" "}
-                    {val.question.q_text}{" "}
+                    {val.question.text}{" "}
                     <span className="text-red-600">
                       {val.question.is_required ? " *" : " "}
                     </span>
                   </label>
                   <input
                     type="text"
-                    className={`box-border break-words outline-none ${
+                    className={`box-border  break-words outline-none ${
                       val.question.q_type === "SHORT_ANSWER" ? "" : "w-1/2"
-                    } py-2 text-sm bg-transparent rounded-sm border-b-2 border-b-primary/70 focus:border-b-[2.5px] focus:border-b-blue-500 ease-in overflow-scroll`}
+                    } py-2 text-sm bg-transparent rounded-sm border-b-2 border-b-tertiary/70 focus:border-b-[2.5px] focus:border-b-blue-500 ease-in overflow-scroll`}
                     // onBlur={() => monitorEmptyText(required)}
                     // value={textAnswer.answer != null ? textAnswer.answer : ""}
                     onChange={(e) => {
@@ -230,24 +222,24 @@ export const Cards = (uid) => {
                   ></input>
 
                   {tempFlag && errorMessage[index].message ? (
-                    <span className="text-red">
+                    <span className="text-secondary">
                       {errorMessage[index].message}
                     </span>
                   ) : (
                     <span></span>
                   )}
                 </div>
-              ) : val.question.q_type === "RADIO" ||
-                val.question.q_type === "MULTIPLE_CHOICE" ? (
+              ) : val.question.type === "RADIO" ||
+                val.question.type === "MULTIPLE_CHOICE" ? (
                 // <RenderRadioButton
                 //   desc={val.question.q_desc}
                 //   question={val.question.q_text}
                 //   options={radioOptions[index]}
                 // />
-                <div className="w-full flex flex-col flex-grow flex-shrink-0 basis-full mb-2 p-2 border border-primary2 rounded-lg hover:border-[2px] [transiton:border-bottom-radius_0.3s_ease-in-out] ">
-                  <label htmlFor={val.question.q_desc}>
+                <div className="w-full flex flex-col flex-grow flex-shrink-0 basis-full mb-2 p-2  rounded-lg  [transiton:border-bottom-radius_0.3s_ease-in-out] ">
+                  <label htmlFor={val.question.desc}>
                     {" "}
-                    {val.question.q_text}{" "}
+                    {val.question.text}{" "}
                     <span className="text-red-600">
                       {val.question.is_required ? " *" : " "}
                     </span>
@@ -255,13 +247,14 @@ export const Cards = (uid) => {
                   {val.question.options.map((value, index) => (
                     <div className="" key={index}>
                       <input
-                        className="before:content[''] peer relative w-3 h-3 mr-2 cursor-pointer appearance-none rounded-full border border-blue-200 border-5 hover:bg-primary/70 focus:bg-tertiary checked:bg-tertiary active:bg-black transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4  before:transition-opacity  hover:before:opacity-5"
+                        className="before:content[''] peer relative w-3 h-3 mr-2 cursor-pointer appearance-none rounded-full border border-blue-200 border-5 hover:bg-gray1/70 focus:bg-tertiary checked:bg-tertiary checked:border-0 active:bg-black transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4  before:transition-opacity  hover:before:opacity-5"
                         type="radio"
-                        name={val.question.q_desc}
+                        name={val.question.desc}
                         // value={value}
                         // onChange={(e) =>
                         //   handleRenderRadioButtonCLick(val, value)
                         // }
+                        // checked
                         onChange={(e) => {
                           val.question.answer = value;
                           console.log(val.question);
@@ -277,30 +270,30 @@ export const Cards = (uid) => {
                     </div>
                   ))}
                   {tempFlag && errorMessage[index].message ? (
-                    <span className="text-red">
+                    <span className="text-secondary">
                       {errorMessage[index].message}
                     </span>
                   ) : (
                     <span> </span>
                   )}
                 </div>
-              ) : val.question.q_type === "EMAIL" ? (
+              ) : val.question.type === "EMAIL" ? (
                 // <RenderEmailArea
                 //   desc={val.question.q_desc}
                 //   question={val.question.q_text}
                 //   options={radioOptions[index]}
                 // />
-                <div className="w-full flex flex-col flex-grow flex-shrink-0 basis-full mb-2 p-2 border border-primary2 rounded-lg hover:border-[2px] [transiton:border-bottom-radius_0.3s_ease-in-out] ">
+                <div className="w-full flex flex-col flex-grow flex-shrink-0 basis-full mb-2 p-2   [transiton:border-bottom-radius_0.3s_ease-in-out] ">
                   <label className="mb-2" htmlFor={val.question.desc}>
                     {" "}
-                    {val.question.q_text}{" "}
+                    {val.question.text}{" "}
                     <span className="text-red-600">
                       {val.question.is_required ? " *" : " "}
                     </span>
                   </label>
                   <input
                     type="email"
-                    className={`box-border break-words outline-none ${"w-1/2"} py-2 text-sm bg-transparent rounded-sm border-b-2 border-b-primary/70 focus:border-b-[2.5px] focus:border-b-blue-500 ease-in overflow-scroll`}
+                    className={`box-border break-words outline-none ${"w-1/2"} py-2 text-sm bg-transparent rounded-sm border-b-2 border-b-tertiary/70 focus:border-b-[2.5px] focus:border-b-blue-500 ease-in overflow-scroll`}
                     // onBlur={() => monitorEmptyText(required)}
                     // value={(e)=>{e.target.value}}
                     onChange={(e) => {
@@ -314,30 +307,30 @@ export const Cards = (uid) => {
                     // required
                   ></input>
                   {tempFlag && errorMessage[index].message ? (
-                    <span className="text-red">
+                    <span className="text-secondary">
                       {errorMessage[index].message}
                     </span>
                   ) : (
                     <span></span>
                   )}
                 </div>
-              ) : val.question.q_type === "DATE" ? (
+              ) : val.question.type === "DATE" ? (
                 // <RenderDateArea
                 //   desc={val.question.q_desc}
                 //   question={val.question.q_text}
                 //   options={radioOptions[index]}
                 // />
-                <div className="w-full flex flex-col flex-grow flex-shrink-0 bg-transparent basis-full mb-2 p-2 border border-primary2 rounded-lg hover:border-[2px] [transiton:border-bottom-radius_0.3s_ease-in-out] ">
+                <div className="w-full flex flex-col flex-grow flex-shrink-0 bg-transparent basis-full mb-2 p-2 rounded-lg [transiton:border-bottom-radius_0.3s_ease-in-out] ">
                   <label className="mb-2" htmlFor={val.question.desc}>
                     {" "}
-                    {val.question.q_text}{" "}
+                    {val.question.text}{" "}
                     <span className="text-red-600">
                       {val.question.is_required ? " *" : " "}
                     </span>
                   </label>
                   <input
                     type="date"
-                    className={`box-border break-words outline-none w-1/2 py-2 text-sm bg-transparent rounded-sm overflow-scroll`}
+                    className={`box-border break-words outline-none py-2 text-sm bg-transparent rounded-sm  `}
                     // onBlur={() => monitorEmptyText(required)}
                     // value={(e)=>{e.target.value}}
                     onChange={(e) => {
@@ -351,7 +344,7 @@ export const Cards = (uid) => {
                     // required
                   ></input>
                   {tempFlag && errorMessage[index].message ? (
-                    <span className="text-red">
+                    <span className="text-secondary">
                       {errorMessage[index].message}
                     </span>
                   ) : (
@@ -362,7 +355,7 @@ export const Cards = (uid) => {
             </li>
           ))}
       </ul>
-      <button onClick={(e) => nextCard(e)} className="w-[10%]">
+      <button onClick={(e) => nextCard(e)} className=" h-fit relative top-[45%]  hover:border-2 rounded-[50%] p-1 border-gray1 hover:bg-gray1">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -373,7 +366,7 @@ export const Cards = (uid) => {
             currentIndex === activity && activity.cards.length - 1
               ? "gray"
               : false || requiredFlag.length === 0
-              ? "black"
+              ? "#349959"
               : "gray"
           }
           strokeWidth="2"

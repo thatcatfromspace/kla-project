@@ -6,12 +6,29 @@ import { Cards } from "./Cards";
 export const Dashboard = (uid) => {
   const [activeElement, setActiveElement] = useState(0);
   const userId = uid.uid;
-
   const changeActiveElement = (e, itemId) => {
     e.preventDefault();
     setActiveElement(itemId);
   };
-
+  const [currentCardId,setCurrentCardId] = useState();
+  const [showActivity,setShowActivity] = useState(true);
+  const [showCard,setShowCard] = useState(false);
+  const [activity, setActivity] = useState([]);
+  const [currentActivity,setCurrentActivity] = useState();
+  useEffect(() => {
+    axios.get(`http://127.0.0.1:8000/api/recentactivity/user/${userId}/`).then((res) => {
+      let response = res.data;
+      console.log(res.data);
+      setActivity(response);
+    });
+  }, []);
+  useEffect(()=>{
+    // setShowActivity(false);
+    if(currentCardId!=null){
+      console.log(currentCardId)
+      setShowCard(true);
+    }
+  },[setShowActivity,currentCardId,setCurrentCardId])
   return (
     <main className="[height:100%] [min-height:100vh] bg-gray3 py-7 px-10">
       <nav className="flex justify-between items-center">
@@ -63,8 +80,39 @@ export const Dashboard = (uid) => {
         </div>
       </nav>
       <div>
-        {activeElement===0?
-        <Cards uid={userId} />:null}
+        { showActivity && 
+<ul className="flex flex-wrap justify-start  px-3">
+  {activity.length!=0?activity.map((val,index)=>(
+    <li key={index} className="flex w-1/4 flex-col flex-wrap h-[20vh] shadow-md  hover:shadow-lg hover:shadow-primary p-8 ">
+      <button onClick={(e)=>{
+        setCurrentCardId(val.card_ids.indexOf(val.current_card));
+        setCurrentActivity(val);
+        console.log(val.card_ids.indexOf(val.current_card));
+        setShowActivity(false);
+        // setShowCard(true);
+      }}>
+      <span className="text-3xl justify-start flex">
+        {val.name}
+      </span>
+      <span className="text-xl justify-start  flex">
+        {val.desc}
+      </span>
+      </button>
+
+
+    </li>
+  )):null}
+</ul>
+}
+      </div>
+      <div>
+
+        {!showActivity&&showCard&& activeElement === 0 ? (
+          <div className="h-full flex justify-end  ml-[50%] pr-[8.33%]">
+            <Cards uid={userId} cid={currentCardId} Activity = {currentActivity}/>
+          </div>
+        ) : null} 
+
       </div>
     </main>
   );
