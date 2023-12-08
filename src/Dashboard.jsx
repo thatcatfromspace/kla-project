@@ -47,7 +47,7 @@ export const Dashboard = (uid) => {
               fill="#349959"
             />
           </svg>
-          <span className="flex flex-col justify-center text-tertiary font-poppins text-4xl  italic font-[700] ">
+          <span className="flex flex-col justify-center text-gray2 font-poppins text-4xl  italic font-[700] ">
             PROLEAP
           </span>
         </div>
@@ -88,16 +88,16 @@ export const Dashboard = (uid) => {
         </div>
       </nav>
       <div className="mainarea flex mt-[10vh] relative z-1">
-        <div className="sidebar w-[16.66%] flex flex-col  h-[90vh] fixed bg-primary border-t-2 border-primary2">
-          <div className="flex justify-center my-12 ">
+        <div className="sidebar w-1/6 min-w-[150px] max-w-[250px] flex flex-col h-[90vh] fixed bg-primary border-t-2 border-primary2">
+          <div className="flex justify-center mt-12 mb-4 ">
             <img
-              src="/test.png"
+              src="./cat.jpg"
               alt=""
-              className="w-[200px] h-[200px] rounded-[50%]"
+              className="w-[50%] max-w-[100px] rounded-[50%]"
             />
           </div>
-          <div className="text-tertiary flex justify-center text-3xl font-poppins">
-            <span>USERNAME</span>
+          <div className="text-tertiary flex justify-center text-lg font-poppins">
+            <span> Username </span>
           </div>
         </div>
         <div className="w-[50%] ml-[16.66%] p-8">
@@ -140,38 +140,23 @@ export const Dashboard = (uid) => {
             </div>
           ) : null}
         </div>
-        <div className="w-[33.34%] flex-col relative p-8 text-3xl ">
-          <div className="h-fit shadow-2xl mb-8">
+        <div className="w-[33.34%] max-w-[400px] flex-col relative p-8 text-3xl place-self-end">
+          <div className="h-fit shadow-xl rounded-lg p-4 mb-8">
             <div>Stats</div>
             <span className="text-xl">
               Lorem, ipsum dolor sit amet consectetur adipisicing elit. Modi
               quis nam mollitia quod natus laboriosam praesentium voluptatem
               eveniet repellendus culpa cum, non consequuntur temporibus! Facere
-              iusto velit officiis voluptate iure. Lorem ipsum dolor sit amet
-              consectetur adipisicing elit. Veniam, culpa. Inventore repellat
-              impedit ex distinctio vel fugiat voluptates pariatur consectetur
-              voluptate, nesciunt veritatis sit molestiae, omnis ea ipsam, nihil
-              facilis? Porro, distinctio sed libero aspernatur pariatur quas
-              repellendus voluptatibus repellat, sint ex voluptas nulla illo.
-              Hic ea facilis excepturi repellendus debitis eaque ut in, sunt
-              iste omnis. Ipsa, quidem soluta.
+              iusto velit officiis voluptate iure.  
             </span>
           </div>
-          <div className="h-fit shadow-2xl ">
+          <div className="h-fit shadow-xl rounded-lg p-4 ">
             <div>Deadlines</div>
             <span className="text-xl">
               Lorem ipsum, dolor sit amet consectetur adipisicing elit.
               Veritatis illum distinctio temporibus minus illo explicabo itaque
               sit eius laudantium fugit libero, doloribus, accusamus quidem
-              repellat quis iste quisquam minima quam? Sint aspernatur iste odio
-              fugiat officia dignissimos, dolor assumenda optio pariatur
-              temporibus cupiditate dolorum ea quasi totam nam qui eaque rerum
-              earum, ullam modi consectetur obcaecati? Nostrum quis provident
-              ducimus? Repellendus, cum! Blanditiis totam deserunt assumenda
-              velit doloremque. Debitis nobis, tempora omnis aspernatur maiores
-              voluptates dolores, dolor sed, perspiciatis non corporis
-              perferendis harum officia veniam aliquid rem quasi impedit
-              recusandae.
+              repellat quis iste quisquam minima quam? 
             </span>
           </div>
         </div>
