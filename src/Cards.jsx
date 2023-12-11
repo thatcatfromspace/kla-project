@@ -78,7 +78,7 @@ export const Cards = ({uid,cid,Activity}) => {
     setRequiredFlag([]);
     setErrorMessage([]);
     axios
-      .get(`http://127.0.0.1:8000/api/activity/${aid}/card/${cid}/`)
+      .get(`http://127.0.0.1:8000/api/activity/${aid}/card/${cid}/user/${userId}`)
       .then((res) => {
         const response = res.data;
         setCard(response);
@@ -184,7 +184,7 @@ export const Cards = ({uid,cid,Activity}) => {
     }
   }, [currentIndex]);
   return (
-    <div className="cards w-[75%] flex justify-evenly align-middle bg-primary mt-[3vh] border-2 text-gray1 border-black py-3">
+    <div className="cards w-full flex justify-evenly align-middle bg-primary  border-2 text-gray1 border-black py-3">
       <button onClick={(e) => previousCard(e)} className="h-fit relative top-[45%]  hover:border-2 rounded-[50%] p-1 hover:bg-gray1">
         <svg
           xmlns="http://www.w3.org/2000/svg"

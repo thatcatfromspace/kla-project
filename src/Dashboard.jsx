@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 // import { Cards } from "./Cards";
 import axios from "axios";
 import { Cards } from "./Cards";
-
-export const Dashboard = (uid) => {
+import { useNavigate } from "react-router-dom";
+export const Dashboard = ({uid,userName,isAuthenticated}) => {
   const [activeElement, setActiveElement] = useState(0);
-  const userId = uid.uid;
+  const isAuth = isAuthenticated;
+  const userId = uid;
+  const uName = userName;
+  const navigate = useNavigate();
   const changeActiveElement = (e, itemId) => {
     e.preventDefault();
     setActiveElement(itemId);
@@ -32,7 +35,8 @@ export const Dashboard = (uid) => {
     }
   }, [setShowActivity, currentCardId, setCurrentCardId]);
   return (
-    <main className="[height:100%] [min-height:100vh] bg-gray3  ">
+     isAuth===true?
+    <main className="[height:100%] [min-height:100vh] bg-gray3 text-[30px] ">
       <nav className="flex justify-between z-10 bg-primary h-[10vh] top-0 w-full fixed text-gray3 items-center px-8">
         <div className="w-[75%] flex gap-5">
           <svg
@@ -47,16 +51,16 @@ export const Dashboard = (uid) => {
               fill="#349959"
             />
           </svg>
-          <span className="flex flex-col justify-center text-tertiary font-poppins text-4xl  italic font-[700] ">
+          <span className="flex flex-col justify-center  text-tertiary font-poppins  italic font-[700] ">
             PROLEAP
           </span>
         </div>
-        <div className="nav-main flex justify-evenly align-middle w-[25%] ">
+        <div className="nav-main flex justify-evenly align-middle w-[25%] text-[18.54px] ">
           <div
             className={
               activeElement == 0
                 ? "border-b-2 border-b-primary2 cursor-pointer h-7 transition-colors duration-300 ease-in-out"
-                : "cursor-pointer h-7"
+                : "cursor-pointer h-7 "
             }
             onClick={(e) => setActiveElement(0)}
           >
@@ -88,7 +92,7 @@ export const Dashboard = (uid) => {
         </div>
       </nav>
       <div className="mainarea flex mt-[10vh] relative z-1">
-        <div className="sidebar w-[16.66%] flex flex-col  h-[90vh] fixed bg-primary border-t-2 border-primary2">
+        <div className="sidebar w-[16.66%] flex flex-col   h-[90vh] fixed bg-primary border-t-2 border-primary2">
           <div className="flex justify-center my-12 ">
             <img
               src="/test.png"
@@ -96,8 +100,8 @@ export const Dashboard = (uid) => {
               className="w-[200px] h-[200px] rounded-[50%]"
             />
           </div>
-          <div className="text-tertiary flex justify-center text-3xl font-poppins">
-            <span>USERNAME</span>
+          <div className="text-tertiary flex justify-center text-[18.54px] font-poppins">
+            <span>{uName}</span>
           </div>
         </div>
         <div className="w-[50%] ml-[16.66%] p-8">
@@ -118,10 +122,10 @@ export const Dashboard = (uid) => {
                       className="flex w-1/2 flex-col flex-wrap h-[20vh] shadow-md  hover:shadow-lg hover:shadow-primary p-8 "
                     >
                       <li key={index} className="">
-                        <span className="text-3xl justify-start flex">
+                        <span className="text-[30px] justify-start flex">
                           {val.name}
                         </span>
-                        <span className="text-xl justify-start  flex">
+                        <span className="text- justify-start text-[18.54px] flex">
                           {val.desc}
                         </span>
                       </li>
@@ -131,7 +135,7 @@ export const Dashboard = (uid) => {
             </ul>
           )}
           {!showActivity && showCard && activeElement === 0 ? (
-            <div className="h-fit flex justify-end  ml-[50%] pr-[8.33%]">
+            <div className="h-fit flex justify-center text-[18.54px] ml-0 ">
               <Cards
                 uid={userId}
                 cid={currentCardId}
@@ -140,42 +144,32 @@ export const Dashboard = (uid) => {
             </div>
           ) : null}
         </div>
-        <div className="w-[33.34%] flex-col relative p-8 text-3xl ">
-          <div className="h-fit shadow-2xl mb-8">
-            <div>Stats</div>
-            <span className="text-xl">
+        {showActivity && <div className="w-[33.34%] flex-col relative p-8  ">
+          <div className="h-fit shadow-2xl mb-8 p-4">
+            <div className="text-[30px]">Stats</div>
+            <span className="text-[18.54px]">
               Lorem, ipsum dolor sit amet consectetur adipisicing elit. Modi
               quis nam mollitia quod natus laboriosam praesentium voluptatem
               eveniet repellendus culpa cum, non consequuntur temporibus! Facere
               iusto velit officiis voluptate iure. Lorem ipsum dolor sit amet
               consectetur adipisicing elit. Veniam, culpa. Inventore repellat
               impedit ex distinctio vel fugiat voluptates pariatur consectetur
-              voluptate, nesciunt veritatis sit molestiae, omnis ea ipsam, nihil
-              facilis? Porro, distinctio sed libero aspernatur pariatur quas
-              repellendus voluptatibus repellat, sint ex voluptas nulla illo.
-              Hic ea facilis excepturi repellendus debitis eaque ut in, sunt
-              iste omnis. Ipsa, quidem soluta.
             </span>
           </div>
-          <div className="h-fit shadow-2xl ">
-            <div>Deadlines</div>
-            <span className="text-xl">
+          <div className="h-fit shadow-2xl p-4">
+            <div className="text-[30px]">Deadlines</div>
+            <span className="text-[18.54px]">
               Lorem ipsum, dolor sit amet consectetur adipisicing elit.
               Veritatis illum distinctio temporibus minus illo explicabo itaque
               sit eius laudantium fugit libero, doloribus, accusamus quidem
               repellat quis iste quisquam minima quam? Sint aspernatur iste odio
               fugiat officia dignissimos, dolor assumenda optio pariatur
               temporibus cupiditate dolorum ea quasi totam nam qui eaque rerum
-              earum, ullam modi consectetur obcaecati? Nostrum quis provident
-              ducimus? Repellendus, cum! Blanditiis totam deserunt assumenda
-              velit doloremque. Debitis nobis, tempora omnis aspernatur maiores
-              voluptates dolores, dolor sed, perspiciatis non corporis
-              perferendis harum officia veniam aliquid rem quasi impedit
-              recusandae.
             </span>
           </div>
-        </div>
+        </div>}
       </div>
     </main>
+  :navigate('/')
   );
 };
