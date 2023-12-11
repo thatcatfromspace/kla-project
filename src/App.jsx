@@ -31,6 +31,7 @@ const App = () => {
       // Validate the access token (e.g., check expiration)
       // If valid, set the user as authenticated
       setUserId(userId);
+      console.log(userId);
     }
   }, [cookies.userId]);
 
@@ -47,7 +48,7 @@ const App = () => {
       <Routes>
         <Route exact path="/" element={<LoginForm setCookie={setCookie}   />} />
         <Route path="/signup" element={<SignupForm />} />
-        <Route path="/dashboard" element={<Dashboard uid = {userId} userName={userName} isAuthenticated={isAuthenticated}/>} />
+        <Route path="/dashboard" element={<Dashboard uid = {userId?userId:cookies.userId} userName={userName} isAuthenticated={isAuthenticated}/>} />
         {/* <Route path="/cards" element={<Cards />} /> */}
         <Route path="/polls" element={<DirectPolling />} />
         <Route path="*" element={<NotFound />} />
