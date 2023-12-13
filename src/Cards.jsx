@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-export const Cards = ({uid,cid,Activity}) => {
+import { input } from "@material-tailwind/react";
+export const Cards = ({ uid, cid, Activity }) => {
   console.log(cid);
   const [currentIndex, setCurrentIndex] = useState(cid);
   const [card, setCard] = useState([]);
@@ -21,55 +22,52 @@ export const Cards = ({uid,cid,Activity}) => {
     e.preventDefault();
     const isFirstSlide = currentIndex === 0;
     const required = requiredFlag.length === 0;
-    if (!required) {
-      let temp = errorMessage;
-      for (let i = 0; i < requiredFlag.length; i++) {
-        for (let j = 0; j < temp.length; j++) {
-          if (requiredFlag[i].id === temp[j].id) {
-            temp[j].message = "Fill out this field";
-            temp[j].is_true = true;
-            setTempFlag(true);
-          }
-        }
-      }
-      setErrorMessage(temp);
-    } else {
-      for (let i = 0; i < questionsId.length; i++) {
-        if ("answer" in card.questions[i].question) {
-          if (card.questions[i].question.q_type === "RADIO") {
-            let obj = {
-              question: card.questions[i].question.id,
-              answer: "",
-              user: userId,
-              option: card.questions[i].question.answer.id,
-              activity:activity.id,
-              card:card.id,
-            };
-            axios.post("http://127.0.0.1:8000/api/answer/", obj).then((res) => {
-              console.log(res.data);
-            });
-          } else {
-            let obj = {
-              question: card.questions[i].question.id,
-              answer: card.questions[i].question.answer,
-              user: userId,
-              option: "",
-              activity:activity.id,
-              card:card.id,
-            };
-            axios.post("http://127.0.0.1:8000/api/answer/", obj).then((res) => {
-              console.log(res.data);
-            });
-          }
-        }
-      }
-    }
+    // if (!required) {
+    //   let temp = errorMessage;
+    //   for (let i = 0; i < requiredFlag.length; i++) {
+    //     for (let j = 0; j < temp.length; j++) {
+    //       if (requiredFlag[i].id === temp[j].id) {
+    //         temp[j].message = "Fill out this field";
+    //         temp[j].is_true = true;
+    //         setTempFlag(true);
+    //       }
+    //     }
+    //   }
+    //   setErrorMessage(temp);
+    // }
+    // } else {
+    //   for (let i = 0; i < questionsId.length; i++) {
+    //     if ("answer" in card.questions[i].question) {
+    //       if (card.questions[i].question.q_type === "RADIO") {
+    //         let obj = {
+    //           question: card.questions[i].question.id,
+    //           answer: "",
+    //           user: userId,
+    //           option: card.questions[i].question.answer.id,
+    //           activity:activity.id,
+    //           card:card.id,
+    //         };
+    //         axios.post("http://127.0.0.1:8000/api/answer/", obj).then((res) => {
+    //           console.log(res.data);
+    //         });
+    //       } else {
+    //         let obj = {
+    //           question: card.questions[i].question.id,
+    //           answer: card.questions[i].question.answer,
+    //           user: userId,
+    //           option: "",
+    //           activity:activity.id,
+    //           card:card.id,
+    //         };
+    //         axios.post("http://127.0.0.1:8000/api/answer/", obj).then((res) => {
+    //           console.log(res.data);
+    //         });
+    //       }
+    //     }
+    //   }
+    // }
 
-    const newIndex = isFirstSlide
-      ? currentIndex
-      : required
-      ? currentIndex - 1
-      : currentIndex;
+    const newIndex = isFirstSlide ? currentIndex : currentIndex - 1;
     setCurrentIndex(newIndex);
   };
 
@@ -78,9 +76,12 @@ export const Cards = ({uid,cid,Activity}) => {
     setRequiredFlag([]);
     setErrorMessage([]);
     axios
-      .get(`http://127.0.0.1:8000/api/activity/${aid}/card/${cid}/user/${userId}`)
+      .get(
+        `http://127.0.0.1:8000/api/activity/${aid}/card/${cid}/user/${userId}`
+      )
       .then((res) => {
         const response = res.data;
+        console.log(response);
         setCard(response);
         setQuestionId(response.question);
         const respons = res.data.questions;
@@ -91,7 +92,10 @@ export const Cards = ({uid,cid,Activity}) => {
             message: "",
             is_true: false,
           };
-          if (respons[i].question.is_required === true) {
+          if (
+            respons[i].question.is_required === true &&
+            respons[i].answer.length === 0
+          ) {
             let obj = {
               id: respons[i].question.id,
             };
@@ -123,44 +127,49 @@ export const Cards = ({uid,cid,Activity}) => {
       for (let i = 0; i < questionsId.length; i++) {
         console.log(card.questions[i]);
         if ("answer" in card.questions[i].question) {
-          
           if (card.questions[i].question.type === "RADIO") {
             let obj = {
               question: card.questions[i].question.id,
               answer: "",
               user: userId,
               option: card.questions[i].question.answer.id,
-              activity:activity.id,
-              card:card.id,
+              activity: activity.id,
+              card: card.id,
             };
+            console.log(obj);
+
             axios.post("http://127.0.0.1:8000/api/answer/", obj).then((res) => {
-              console.log(res.data);
+              // console.log(res.data);
             });
-          } else if(card.questions[i].question.type === "TEXT" || card.questions[i].question.type === "SHORT_ANSWER") {
+          } else if (
+            card.questions[i].question.type === "TEXT" ||
+            card.questions[i].question.type === "SHORT_ANSWER" ||
+            card.questions[i].question.type === "DATE"
+          ) {
             let obj = {
               question: card.questions[i].question.id,
               answer: card.questions[i].question.answer,
               user: userId,
               option: "",
-              activity:activity.id,
-              card:card.id,
+              activity: activity.id,
+              card: card.id,
             };
+            console.log(obj);
             axios.post("http://127.0.0.1:8000/api/answer/", obj).then((res) => {
-              console.log(res.data);
+              // console.log(res.data);
             });
-          }
-          else{
+          } else {
             let obj = {
               question: card.questions[i].question.id,
               answer: null,
               user: userId,
               option: null,
-              activity:activity.id,
-              card:card.id,
+              activity: activity.id,
+              card: card.id,
             };
             console.log(obj);
             axios.post("http://127.0.0.1:8000/api/answer/", obj).then((res) => {
-              console.log(res.data);
+              // console.log(res.data);
             });
           }
         }
@@ -175,7 +184,6 @@ export const Cards = ({uid,cid,Activity}) => {
     setCurrentIndex(newIndex);
   };
 
-
   useEffect(() => {
     if (activity != null) {
       if (currentIndex < activity.card_ids.length) {
@@ -185,7 +193,10 @@ export const Cards = ({uid,cid,Activity}) => {
   }, [currentIndex]);
   return (
     <div className="cards w-full flex justify-evenly align-middle bg-primary  border-2 text-gray1 border-black py-3">
-      <button onClick={(e) => previousCard(e)} className="h-fit relative top-[45%]  hover:border-2 rounded-[50%] p-1 hover:bg-gray1">
+      <button
+        onClick={(e) => previousCard(e)}
+        className="h-fit relative top-[45%]  hover:border-2 rounded-[50%] p-1 hover:bg-gray1"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -211,11 +222,14 @@ export const Cards = ({uid,cid,Activity}) => {
       </button>
       <ul className="flex flex-col  ">
         <div className="w- h-[10%] bg-primary text-tertiary p-3">
-          {activity!=null ?activity.name:null}
+          {activity != null ? activity.name : null}
         </div>
         {card.questions &&
           card.questions.map((val, index) => (
-            <li className="none h-full w-[100%] border-t-2 border-primary" key={index}>
+            <li
+              className="none h-full w-[100%] border-t-2 border-primary"
+              key={index}
+            >
               {val.question.type === "TEXT" ||
               val.question.type === "SHORT_ANSWER" ? (
                 // <RenderTextArea desc={val.question.q_desc} question={val} textAnswer={textAnswer} setTestAnswer={setTestAnswer}/>
@@ -233,7 +247,10 @@ export const Cards = ({uid,cid,Activity}) => {
                       val.question.q_type === "SHORT_ANSWER" ? "" : "w-1/2"
                     } py-2 text-sm bg-transparent rounded-sm border-b-2 border-b-tertiary/70 focus:border-b-[2.5px] focus:border-b-blue-500 ease-in overflow-scroll`}
                     // onBlur={() => monitorEmptyText(required)}
-                    // value={textAnswer.answer != null ? textAnswer.answer : ""}
+                    defaultValue={
+                      val.answer.length != 0 ? val.answer[0].answer : ""
+                    }
+                    disabled={val.answer.length != 0 ? true : false}
                     onChange={(e) => {
                       val.question.answer = e.target.value;
                       console.log(val.question);
@@ -267,31 +284,64 @@ export const Cards = ({uid,cid,Activity}) => {
                       {val.question.is_required ? " *" : " "}
                     </span>
                   </label>
-                  {val.question.options.map((value, index) => (
-                    <div className="" key={index}>
+                  {val.answer.length === 0 ? (
+                    val.question.options.map((value, index) => (
+                      <div className="" key={index}>
+                        <input
+                          className="before:content[''] peer relative w-3 h-3 mr-2 cursor-pointer appearance-none rounded-full border border-blue-200 border-5 hover:bg-gray1/70 focus:bg-tertiary checked:bg-tertiary checked:border-0 active:bg-black transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4  before:transition-opacity  hover:before:opacity-5"
+                          type="radio"
+                          name={val.question.desc}
+                          // value={value}
+                          // onChange={(e) =>
+                          //   handleRenderRadioButtonCLick(val, value)
+                          // }
+                          // checked
+                          checked={
+                            val.answer.length != 0
+                              ? value.id === val.answer[0].id
+                                ? true
+                                : false
+                              : false
+                          }
+                          disabled={val.answer.length != 0 ? true : false}
+                          onChange={(e) => {
+                            val.question.answer = value;
+                            console.log(val.question);
+                            const new_state = requiredFlag.filter(
+                              (obj) => obj.id != val.question.id
+                            );
+                            setRequiredFlag(new_state);
+                          }}
+                          id={`radio-${index}`}
+                        ></input>
+
+                        <label htmlFor={`radio-${index}`}>
+                          {" "}
+                          {value.value}{" "}
+                        </label>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="">
                       <input
                         className="before:content[''] peer relative w-3 h-3 mr-2 cursor-pointer appearance-none rounded-full border border-blue-200 border-5 hover:bg-gray1/70 focus:bg-tertiary checked:bg-tertiary checked:border-0 active:bg-black transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4  before:transition-opacity  hover:before:opacity-5"
                         type="radio"
                         name={val.question.desc}
-                        // value={value}
-                        // onChange={(e) =>
-                        //   handleRenderRadioButtonCLick(val, value)
-                        // }
-                        // checked
-                        onChange={(e) => {
-                          val.question.answer = value;
-                          console.log(val.question);
-                          const new_state = requiredFlag.filter(
-                            (obj) => obj.id != val.question.id
-                          );
-                          setRequiredFlag(new_state);
-                        }}
+                        checked
+                        disabled
                         id={`radio-${index}`}
                       ></input>
-
-                      <label htmlFor={`radio-${index}`}> {value.value} </label>
+                      {/* <label htmlFor={`radio-${index}`} key={index}>
+                        {val.answer[0].}
+                      </label> */}
+                      {val.question.options.map((value, index) => (
+                        <label htmlFor={`radio-${index}`} key={index}>
+                          {(value.id)===(val.answer[0].option)?(value.value):null} 
+                          </label>
+                      ))}
                     </div>
-                  ))}
+                  )}
+
                   {tempFlag && errorMessage[index].message ? (
                     <span className="text-secondary">
                       {errorMessage[index].message}
@@ -327,6 +377,10 @@ export const Cards = ({uid,cid,Activity}) => {
                       );
                       setRequiredFlag(new_state);
                     }}
+                    defaultValue={
+                      val.answer.length != 0 ? val.answer[0].answer : ""
+                    }
+                    disabled={val.answer.length != 0 ? true : false}
                     // required
                   ></input>
                   {tempFlag && errorMessage[index].message ? (
@@ -364,6 +418,10 @@ export const Cards = ({uid,cid,Activity}) => {
                       );
                       setRequiredFlag(new_state);
                     }}
+                    defaultValue={
+                      val.answer.length != 0 ? val.answer[0].answer : ""
+                    }
+                    disabled={val.answer.length != 0 ? true : false}
                     // required
                   ></input>
                   {tempFlag && errorMessage[index].message ? (
@@ -378,7 +436,10 @@ export const Cards = ({uid,cid,Activity}) => {
             </li>
           ))}
       </ul>
-      <button onClick={(e) => nextCard(e)} className=" h-fit relative top-[45%]  hover:border-2 rounded-[50%] p-1 border-gray1 hover:bg-gray1">
+      <button
+        onClick={(e) => nextCard(e)}
+        className=" h-fit relative top-[45%]  hover:border-2 rounded-[50%] p-1 border-gray1 hover:bg-gray1"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
