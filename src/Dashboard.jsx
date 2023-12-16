@@ -13,6 +13,7 @@ export const Dashboard = ({ uid, userName, isAuthenticated }) => {
     e.preventDefault();
     setActiveElement(itemId);
   };
+
   const [currentCardId, setCurrentCardId] = useState();
   const [showActivity, setShowActivity] = useState(true);
   const [showCard, setShowCard] = useState(false);
@@ -20,7 +21,9 @@ export const Dashboard = ({ uid, userName, isAuthenticated }) => {
   const [currentActivity, setCurrentActivity] = useState();
   useEffect(() => {
     axios
-      .get(`http://127.0.0.1:8000/api/recentactivity/user/${userId}/`)
+      .get(
+        `http://${import.meta.env.VITE_API_URL}/api/recentactivity/user/${userId}/`
+      )
       .then((res) => {
         let response = res.data;
         console.log(res.data);
@@ -146,7 +149,7 @@ export const Dashboard = ({ uid, userName, isAuthenticated }) => {
               quis nam mollitia quod natus laboriosam praesentium voluptatem
               eveniet repellendus culpa cum, non consequuntur temporibus! Facere
               iusto velit officiis voluptate iure. Lorem ipsum dolor sit amet
-              consectetur adipisicing elit. Veniam, culpa. 
+              consectetur adipisicing elit. Veniam, culpa.
             </span>
           </div>
           <div className="h-fit shadow-2xl p-4 ">
@@ -160,8 +163,7 @@ export const Dashboard = ({ uid, userName, isAuthenticated }) => {
               temporibus cupiditate dolorum ea quasi totam nam qui eaque rerum
               earum, ullam modi consectetur obcaecati? Nostrum quis provident
               ducimus? Repellendus, cum! Blanditiis totam deserunt assumenda
-              velit doloremque.
-              recusandae.
+              velit doloremque. recusandae.
             </span>
           </div>
         </div>

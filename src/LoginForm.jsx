@@ -30,20 +30,28 @@ export const LoginForm = ({ setCookie, setUserId, setUserName }) => {
   });
 
   const loginUser = (obj) => {
-    axios.post("http://127.0.0.1:8000/api/login/", obj).then((res) => {
-      console.log(res.data);
-      const response = res.data;
-      if (res.status === 200) {
-        // setUserId(response.id);
-        setCookie("userId",response.id,{ path: '/', secure: true });
-        setCookie("userName",response.username,{ path: '/', secure: true });
+    axios
+      .post("http://{import.meta.env.VITE_API_URL}/api/login/", obj)
+      .then((res) => {
+        console.log(res.data);
+        const response = res.data;
+        if (res.status === 200) {
+          // setUserId(response.id);
+          setCookie("userId", response.id, { path: "/", secure: true });
+          setCookie("userName", response.username, { path: "/", secure: true });
 
-        setCookie("accessToken",response.tokens.access,{ path: '/', secure: true });
-        setCookie("refreshToken", response.tokens.refresh,{ path: '/', secure: true });
+          setCookie("accessToken", response.tokens.access, {
+            path: "/",
+            secure: true,
+          });
+          setCookie("refreshToken", response.tokens.refresh, {
+            path: "/",
+            secure: true,
+          });
 
-        navigate("/dashboard");
-      }
-    });
+          navigate("/dashboard");
+        }
+      });
   };
 
   const RenderEye = () => {

@@ -10,6 +10,7 @@ import {DirectPolling} from "./DirectPolling";
 import { useCookies } from 'react-cookie';
 import { useEffect } from "react";
 
+
 const App = () => {
   window;
   const [userId, setUserId] = useState(null);

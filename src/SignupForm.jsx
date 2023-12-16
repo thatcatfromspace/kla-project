@@ -112,12 +112,12 @@ export const SignupForm = () => {
             placeholder="Email"
           />
           <input
-            type="text"
+            type="password"
             className="bg-gray2 h-12 rounded-2xl text-md px-4"
             placeholder="Enter password"
           />
           <input
-            type="text"
+            type="password"
             className="bg-gray2 h-12 rounded-2xl text-md px-4"
             placeholder="Re-enter password"
           />

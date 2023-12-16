@@ -47,7 +47,7 @@ export const Cards = ({ uid, cid, Activity }) => {
     //           activity:activity.id,
     //           card:card.id,
     //         };
-    //         axios.post("http://127.0.0.1:8000/api/answer/", obj).then((res) => {
+    //         axios.post("http://${import.meta.env.VITE_API_URL}/api/answer/", obj).then((res) => {
     //           console.log(res.data);
     //         });
     //       } else {
@@ -59,7 +59,7 @@ export const Cards = ({ uid, cid, Activity }) => {
     //           activity:activity.id,
     //           card:card.id,
     //         };
-    //         axios.post("http://127.0.0.1:8000/api/answer/", obj).then((res) => {
+    //         axios.post("http://{import.meta.env.VITE_API_URL}/api/answer/", obj).then((res) => {
     //           console.log(res.data);
     //         });
     //       }
@@ -77,7 +77,7 @@ export const Cards = ({ uid, cid, Activity }) => {
     setErrorMessage([]);
     axios
       .get(
-        `http://127.0.0.1:8000/api/activity/${aid}/card/${cid}/user/${userId}`
+        `http://${import.meta.env.VITE_API_URL}/api/activity/${aid}/card/${cid}/user/${userId}`
       )
       .then((res) => {
         const response = res.data;
@@ -138,9 +138,11 @@ export const Cards = ({ uid, cid, Activity }) => {
             };
             console.log(obj);
 
-            axios.post("http://127.0.0.1:8000/api/answer/", obj).then((res) => {
-              // console.log(res.data);
-            });
+            axios
+              .post(`http://${import.meta.env.VITE_API_URL}/api/answer/`, obj)
+              .then((res) => {
+                // console.log(res.data);
+              });
           } else if (
             card.questions[i].question.type === "TEXT" ||
             card.questions[i].question.type === "SHORT_ANSWER" ||
@@ -155,9 +157,11 @@ export const Cards = ({ uid, cid, Activity }) => {
               card: card.id,
             };
             console.log(obj);
-            axios.post("http://127.0.0.1:8000/api/answer/", obj).then((res) => {
-              // console.log(res.data);
-            });
+            axios
+              .post(`http://${import.meta.env.VITE_API_URL}/api/answer/`, obj)
+              .then((res) => {
+                // console.log(res.data);
+              });
           } else {
             let obj = {
               question: card.questions[i].question.id,
@@ -168,9 +172,11 @@ export const Cards = ({ uid, cid, Activity }) => {
               card: card.id,
             };
             console.log(obj);
-            axios.post("http://127.0.0.1:8000/api/answer/", obj).then((res) => {
-              // console.log(res.data);
-            });
+            axios
+              .post(`http://${import.meta.env.VITE_API_URL}/api/answer/`, obj)
+              .then((res) => {
+                // console.log(res.data);
+              });
           }
         }
       }
@@ -336,8 +342,10 @@ export const Cards = ({ uid, cid, Activity }) => {
                       </label> */}
                       {val.question.options.map((value, index) => (
                         <label htmlFor={`radio-${index}`} key={index}>
-                          {(value.id)===(val.answer[0].option)?(value.value):null} 
-                          </label>
+                          {value.id === val.answer[0].option
+                            ? value.value
+                            : null}
+                        </label>
                       ))}
                     </div>
                   )}
